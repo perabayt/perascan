@@ -1,0 +1,1324 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>PeraScan · USB'den çalışan Windows envanteri ve güvenlik incelemesi</title>
+<meta name="description" content="PeraScan kurulum istemeden USB bellekten çalışır, neye bakacağını önce sorar ve salt okunur bir Windows envanteri ile gerekçeli sağlık puanı içeren HTML ve JSON rapor üretir. Arayüzü ve örnek raporu tarayıcıda inceleyin.">
+<meta name="theme-color" content="#07080b">
+<link rel="icon" href="ikon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="ikon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:site_name" content="Perabayt">
+<meta property="og:url" content="https://perabayt.github.io/perascan/">
+<meta property="og:title" content="PeraScan · Bir USB bellek, eksiksiz bir bilgisayar karnesi">
+<meta property="og:description" content="Kurulum istemeyen, izin odaklı Windows envanteri ve güvenlik incelemesi. Salt okunur tarama, gerekçeli sağlık puanı, çevrimdışı HTML ve JSON rapor.">
+<meta property="og:image" content="https://perabayt.github.io/perascan/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PeraScan arayüzü: sağlık puanı 60 olan örnek tarama sonucu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PeraScan · Bir USB bellek, eksiksiz bir bilgisayar karnesi">
+<meta name="twitter:description" content="Kurulum istemeyen, izin odaklı Windows envanteri ve güvenlik incelemesi.">
+<meta name="twitter:image" content="https://perabayt.github.io/perascan/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="/_ortak/serit.js" defer></script>
+<style>
+:root{
+  --bg:#07080b; --bg2:#0a0c10; --s1:#0e1116; --s2:#13171e; --s3:#1a1f28;
+  --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.11); --line3:rgba(255,255,255,.18);
+  --text:#eceef2; --muted:#a3aab6; --dim:#6f7785;
+  --blue:#4c8dff; --blue2:#8db7ff; --blueA:rgba(76,141,255,.14);
+  --ok:#4ade80; --warn:#fbbf24; --bad:#f87171;
+  --f:"Geist","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+  --m:"Geist Mono","Cascadia Mono",ui-monospace,Consolas,monospace;
+  --gut:32px; --max:1180px;
+  --r1:8px; --r2:12px; --r3:16px; --r4:22px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--f);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;font-feature-settings:"ss01"}
+a{color:inherit}
+img{max-width:100%;display:block;height:auto}
+code,kbd{font-family:var(--m);font-size:.88em}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sar{max-width:var(--max);margin:0 auto;padding:0 var(--gut);position:relative}
+.gizli{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--blue2);outline-offset:3px;border-radius:6px}
+
+/* ---------- üst çubuk ---------- */
+.ust{position:sticky;top:0;z-index:40;background:rgba(7,8,11,.72);backdrop-filter:saturate(160%) blur(16px);-webkit-backdrop-filter:saturate(160%) blur(16px);border-bottom:1px solid transparent;transition:border-color .3s}
+.ust.kaydi{border-bottom-color:var(--line)}
+.ust .sar{display:flex;align-items:center;height:60px;gap:28px}
+.marka{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:15px;letter-spacing:-.01em;flex:none}
+.marka img{width:24px;height:24px;border-radius:7px}
+.marka small{font:500 11px/1 var(--m);color:var(--dim);border:1px solid var(--line2);border-radius:99px;padding:4px 7px;letter-spacing:.02em}
+.ust nav{display:flex;gap:4px;font-size:14px;color:var(--muted);margin-right:auto}
+.ust nav a{text-decoration:none;padding:6px 10px;border-radius:7px;transition:color .2s,background .2s}
+.ust nav a:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.ust nav a.aktif{color:var(--text)}
+.ust .sag{display:flex;gap:8px;align-items:center}
+
+/* ---------- düğmeler ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:10px;font:500 15px/1 var(--f);letter-spacing:-.005em;text-decoration:none;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;transition:background .2s,border-color .2s,transform .2s;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,.07);border-color:var(--line3)}
+.btn .i{width:16px;height:16px;transition:transform .2s}
+.btn:hover .i.ok{transform:translateX(2px)}
+.btn.ana{background:#f4f6fa;border-color:#f4f6fa;color:#07080b;font-weight:600;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 8px 30px -8px rgba(141,183,255,.45)}
+.btn.ana:hover{background:#fff}
+.btn.kucuk{height:34px;padding:0 13px;font-size:13.5px;border-radius:8px}
+
+/* ---------- yazı düzeni ---------- */
+.kas{font:500 12px/1 var(--m);letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);display:inline-flex;align-items:center;gap:10px}
+.kas::before{content:"";width:14px;height:1px;background:currentColor;opacity:.7}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.035em}
+h2{font-size:clamp(30px,4.1vw,50px);line-height:1.06;margin:18px 0 0;text-wrap:balance}
+h2 .sn{color:var(--dim);display:block}
+.bas{max-width:760px}
+.bas.orta{margin:0 auto;text-align:center}
+.bas p{color:var(--muted);font-size:18px;line-height:1.6;margin:18px 0 0;text-wrap:pretty}
+.bas.orta .kas::after{content:"";width:14px;height:1px;background:currentColor;opacity:.7}
+section{position:relative;padding:128px 0}
+.ayrac{border-top:1px solid var(--line)}
+
+/* ---------- kahraman ---------- */
+.kahraman{position:relative;padding:88px 0 40px;overflow:hidden;isolation:isolate}
+.kahraman::before{content:"";position:absolute;inset:-1px 0 auto;height:1100px;z-index:-1;background:
+  radial-gradient(60% 50% at 50% 0%,rgba(76,141,255,.22),transparent 70%),
+  radial-gradient(30% 30% at 82% 30%,rgba(141,183,255,.07),transparent 70%),
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/56px 56px,
+  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/56px 56px;
+  -webkit-mask-image:radial-gradient(80% 70% at 50% 10%,#000 30%,transparent 80%);mask-image:radial-gradient(80% 70% at 50% 10%,#000 30%,transparent 80%)}
+.k-ust{text-align:center;max-width:1100px;margin:0 auto}
+.k-ust .giris{max-width:700px}
+.rozet{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:99px;border:1px solid var(--line2);background:rgba(255,255,255,.03);font-size:13px;color:var(--muted);text-decoration:none}
+.rozet b{font:500 11px/1 var(--m);color:#07080b;background:var(--blue2);padding:5px 8px;border-radius:99px;letter-spacing:.04em}
+h1{font-size:clamp(42px,5.6vw,68px);line-height:1;letter-spacing:-.045em;margin:28px 0 0;text-wrap:balance}
+h1 span{display:block;background:linear-gradient(180deg,#ffffff 10%,#9aa5b8 95%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.06em}
+h1 .ilk{color:var(--text)}
+.giris{font-size:clamp(17px,1.6vw,19px);line-height:1.6;color:var(--muted);max-width:700px;margin:26px auto 0;text-wrap:pretty}
+.eylem{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:36px 0 0}
+.alt-yazi{margin:22px 0 0;font:400 13px/1.5 var(--m);color:var(--dim);letter-spacing:.01em}
+.alt-yazi span+span::before{content:"·";margin:0 10px;color:var(--line3)}
+
+/* akış adımları */
+.akis{display:flex;justify-content:center;align-items:center;margin:60px auto 0;padding:0}
+.akis li{list-style:none;display:flex;align-items:center;gap:12px;color:var(--dim)}
+.akis li:not(:last-child)::after{content:"";width:clamp(20px,4vw,56px);height:1px;margin:0 20px;background:var(--line2);transition:background .5s}
+.akis li.gecti::after{background:linear-gradient(90deg,var(--blue),var(--blue2));box-shadow:0 0 10px rgba(76,141,255,.6)}
+.akis .ik{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--s1);border:1px solid var(--line2);color:var(--muted);transition:all .4s;flex:none}
+.akis .ik .i{width:18px;height:18px}
+.akis .t{display:flex;flex-direction:column;gap:3px;text-align:left}
+.akis b{font-weight:500;font-size:14px;line-height:1.2;color:var(--muted);transition:color .4s;letter-spacing:-.01em;white-space:nowrap}
+.akis small{font:400 11.5px/1.2 var(--m);color:var(--dim);white-space:nowrap}
+.akis li.gecti .ik{border-color:rgba(141,183,255,.35);color:var(--blue2)}
+.akis li.gecti b{color:var(--text)}
+.akis li.simdi .ik{background:var(--blue);border-color:var(--blue);color:#07080b;box-shadow:0 0 0 5px rgba(76,141,255,.14),0 0 24px rgba(76,141,255,.5)}
+.akis li.simdi b{color:var(--text)}
+
+/* canlı pencere */
+.sahne{position:relative;max-width:1150px;margin:32px auto 0}
+.sahne::before{content:"";position:absolute;left:8%;right:8%;top:8%;bottom:-6%;background:radial-gradient(50% 50% at 50% 50%,rgba(76,141,255,.35),transparent 70%);filter:blur(40px);z-index:-1;opacity:.75}
+.cerceve{padding:10px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.02));border:1px solid var(--line2);box-shadow:0 50px 120px -40px rgba(0,0,0,.9)}
+.pencere{border-radius:11px;overflow:hidden;border:1px solid #333b47;background:#0f1319;position:relative}
+.pencere .cubuk{height:34px;display:flex;align-items:center;justify-content:space-between;background:#1c1f24;border-bottom:1px solid #2a2d33;padding-left:12px;font:12px/1 "Segoe UI",system-ui,sans-serif;color:#d4d6da}
+.pencere .cubuk span{display:flex;align-items:center;gap:8px}
+.pencere .cubuk span img{width:16px;height:16px;border-radius:4px}
+.pencere .cubuk em{display:flex;font-style:normal}
+.pencere .cubuk em b{width:46px;height:34px;display:grid;place-items:center;color:#cfcfcf}
+.pencere .cubuk em svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1}
+.ekran{position:relative;overflow:hidden;height:700px;background:#0f1319}
+.ekran iframe{display:block;border:0;width:1120px;height:700px;transform-origin:0 0;background:#0f1319}
+.imlec{position:absolute;left:0;top:0;width:22px;height:22px;z-index:3;pointer-events:none;opacity:0;transform:translate(560px,400px);transition:transform .75s cubic-bezier(.45,.05,.2,1),opacity .3s;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.imlec.gor{opacity:1}
+.imlec::after{content:"";position:absolute;left:-14px;top:-14px;width:28px;height:28px;border-radius:50%;background:rgba(141,183,255,.45);transform:scale(0);opacity:0}
+.imlec.bas::after{animation:tik .45s ease-out}
+@keyframes tik{0%{transform:scale(.2);opacity:1}100%{transform:scale(1.4);opacity:0}}
+.dokun{display:none;position:absolute;inset:0;z-index:4;align-items:flex-end;justify-content:flex-end;padding:10px;text-decoration:none;background:linear-gradient(180deg,transparent 70%,rgba(7,8,11,.55))}
+.dokun span{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:99px;background:rgba(244,246,250,.94);color:#07080b;font:600 12.5px/1 var(--f);box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.dokun .i{width:13px;height:13px}
+.ekran.dar .dokun{display:flex}
+.ekran.dar iframe{pointer-events:none}
+
+.demo-cubuk{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;max-width:1150px;margin:18px auto 0;padding:0 4px}
+.durum{display:inline-flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted);min-height:34px}
+.durum i{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}
+.durum[data-d="oynuyor"] i{background:var(--blue2);box-shadow:0 0 0 0 rgba(141,183,255,.6);animation:nabiz 1.6s infinite}
+.durum[data-d="sizde"] i,.durum[data-d="bitti"] i{background:var(--ok)}
+@keyframes nabiz{70%{box-shadow:0 0 0 8px rgba(141,183,255,0)}100%{box-shadow:0 0 0 0 rgba(141,183,255,0)}}
+.durum button{all:unset;cursor:pointer;white-space:nowrap;flex:none;display:inline-flex;align-items:center;gap:6px;color:var(--text);font-weight:500;padding:5px 10px;border-radius:7px;border:1px solid var(--line2);font-size:13px}
+.durum button:hover{background:rgba(255,255,255,.05)}
+.durum button[hidden]{display:none}
+.durum button:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
+.durum button .i{width:14px;height:14px}
+.tur{display:flex;flex-wrap:wrap;gap:6px}
+.tur button{font:500 13px/1 var(--f);padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--muted);cursor:pointer;transition:all .2s}
+.tur button:hover{color:var(--text);border-color:var(--line3);background:rgba(255,255,255,.05)}
+.tur button:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
+.dipnot{font-size:13px;line-height:1.55;color:var(--dim);max-width:820px;margin:18px auto 0;text-align:center;text-wrap:pretty}
+
+/* ---------- rakam şeridi ---------- */
+.rakamlar{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r3);background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);margin-top:88px}
+.rakamlar div{padding:28px 28px 26px;border-left:1px solid var(--line)}
+.rakamlar div:first-child{border-left:0}
+.rakamlar b{display:block;font-weight:500;font-size:clamp(30px,3.4vw,42px);letter-spacing:-.04em;line-height:1}
+.rakamlar span{display:block;color:var(--muted);font-size:14px;margin-top:12px;line-height:1.45}
+
+/* ---------- kimler için ---------- */
+.kitle{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:64px}
+.panel{position:relative;padding:30px 28px 28px;border-radius:var(--r3);border:1px solid var(--line);background:linear-gradient(180deg,var(--s1),var(--bg2));overflow:hidden;display:flex;flex-direction:column}
+.panel::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(141,183,255,.45),transparent);opacity:.6}
+.panel .ik{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line2);background:rgba(76,141,255,.08);color:var(--blue2)}
+.panel h3{font-size:13px;font-family:var(--m);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:24px 0 0}
+.panel h4{font-size:22px;line-height:1.25;letter-spacing:-.025em;font-weight:600;margin:10px 0 0;text-wrap:balance}
+.panel ul{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
+.panel li{display:grid;grid-template-columns:18px 1fr;gap:12px;color:var(--muted);font-size:15px;line-height:1.55}
+.panel li .i{width:16px;height:16px;color:var(--blue2);margin-top:4px}
+.etiketler{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:24px}
+.etiketler span{font:400 12px/1 var(--m);color:var(--muted);border:1px solid var(--line2);border-radius:6px;padding:6px 8px;background:rgba(255,255,255,.02)}
+
+/* ---------- ürün turu ---------- */
+.satirlar{display:grid;gap:120px;margin-top:88px}
+.satir{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:center}
+.satir.ters{grid-template-columns:7fr 5fr}
+.satir.ters .metin{order:2}
+.satir .no{font:500 12px/1 var(--m);color:var(--blue2);letter-spacing:.08em;display:flex;align-items:center;gap:10px}
+.satir .no em{font-style:normal;color:var(--dim)}
+.satir h3{font-size:clamp(25px,2.5vw,32px);line-height:1.15;margin:16px 0 0;text-wrap:balance}
+.satir p{color:var(--muted);margin:16px 0 0;font-size:16.5px}
+.liste{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.liste li{display:grid;grid-template-columns:18px 1fr;gap:12px;color:var(--muted);font-size:15px;line-height:1.55}
+.liste li .i{width:16px;height:16px;color:var(--ok);margin-top:4px}
+.liste li b{color:var(--text);font-weight:500}
+.cekim{position:relative;margin:0;border-radius:var(--r3);padding:14px;background:radial-gradient(120% 90% at 100% 0%,rgba(76,141,255,.16),transparent 55%),linear-gradient(180deg,var(--s2),var(--s1));border:1px solid var(--line)}
+.cekim button{all:unset;display:block;width:100%;box-sizing:border-box;cursor:zoom-in;border-radius:9px;overflow:hidden;border:1px solid #2f3742;box-shadow:0 30px 60px -30px rgba(0,0,0,.9);transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+.cekim button:hover{transform:translateY(-3px)}
+.cekim button:focus-visible{outline:2px solid var(--blue2);outline-offset:3px}
+.cekim .kirp{display:block;position:relative;aspect-ratio:3/2;overflow:hidden;background:#0f1319}
+.cekim .kirp img{position:absolute;left:var(--x,0);top:var(--y,0);width:calc(var(--z,1) * 100%);max-width:none;height:auto}
+.cekim figcaption{display:flex;justify-content:space-between;gap:12px;font:400 12px/1.4 var(--m);color:var(--dim);margin:12px 4px 0}
+
+.sayfalar{margin-top:96px}
+.sayfalar-ust{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.sayfalar-ust h3{font-size:22px;letter-spacing:-.02em}
+.sayfalar-ust p{margin:6px 0 0;color:var(--muted);font-size:15px}
+.galeri{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+.galeri figure{margin:0}
+.galeri button{all:unset;display:block;width:100%;box-sizing:border-box;cursor:zoom-in;border-radius:10px;overflow:hidden;border:1px solid var(--line2);background:#0f1319;transition:transform .3s,border-color .3s}
+.galeri button:hover{transform:translateY(-3px);border-color:rgba(141,183,255,.5)}
+.galeri button:focus-visible{outline:2px solid var(--blue2);outline-offset:3px}
+.galeri img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:top left}
+.galeri figcaption{margin-top:10px;font-size:14px;color:var(--muted)}
+.galeri figcaption b{color:var(--text);font-weight:500}
+
+/* ---------- bento ---------- */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:64px}
+.kutu{position:relative;border-radius:var(--r3);border:1px solid var(--line);background:linear-gradient(180deg,var(--s1),var(--bg2));padding:24px;overflow:hidden;min-width:0}
+.kutu-ust{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.kutu h3{font-size:16px;letter-spacing:-.01em;font-weight:600}
+.kutu .kaynak{font:400 11.5px/1.3 var(--m);color:var(--dim);text-align:right}
+.kutu p.ac{color:var(--muted);font-size:14px;margin:6px 0 0;line-height:1.5}
+.b-puan{grid-column:span 7;grid-row:span 2}
+.b-koruma{grid-column:span 5}
+.b-depo{grid-column:span 5}
+.b-toplama{grid-column:span 4}
+.b-olay{grid-column:span 4}
+.b-dosya{grid-column:span 4}
+
+.puan-ic{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:center;margin-top:24px}
+.halka{position:relative;width:200px;height:200px}
+.halka svg{width:100%;height:100%;transform:rotate(-90deg)}
+.halka circle{fill:none;stroke-width:9}
+.halka .iz{stroke:var(--s3)}
+.halka .dolu{stroke:var(--warn);stroke-linecap:round;transition:stroke-dashoffset 1.8s cubic-bezier(.2,.8,.2,1)}
+.halka div{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.halka b{font-weight:500;font-size:60px;letter-spacing:-.05em;line-height:1;color:var(--text)}
+.halka small{font:500 13px/1 var(--m);color:var(--warn);margin-top:8px;letter-spacing:.02em}
+.olcek{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:16px;font:400 10.5px/1.2 var(--m);color:var(--dim);text-align:center}
+.olcek span{padding-top:7px;border-top:2px solid var(--s3)}
+.olcek span.bu{border-color:var(--warn);color:var(--warn)}
+.dokum{display:grid}
+.dokum div{display:grid;grid-template-columns:86px 1fr auto;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.45}
+.dokum div:last-child{border-bottom:0}
+.dokum span{font:400 11px/1.4 var(--m);letter-spacing:.04em;text-transform:uppercase;color:var(--dim)}
+.dokum em{font-style:normal;color:var(--text)}
+.dokum b{font:500 13.5px/1 var(--m);color:var(--bad);text-align:right}
+.dokum b.sifir{color:var(--ok)}
+.dokum .top{border-top:1px solid var(--line2);margin-top:2px}
+.dokum .top em{color:var(--muted)}
+.dokum .top b{color:var(--text)}
+.uyari-not{font-size:12.5px;color:var(--dim);margin:18px 0 0;line-height:1.5}
+
+.durumlar{display:grid;margin-top:16px}
+.durumlar div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.durumlar div:last-child{border-bottom:0}
+.durumlar span{color:var(--muted)}
+.cip{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--m);padding:5px 8px;border-radius:6px}
+.cip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.cip.ok{color:var(--ok);background:rgba(74,222,128,.09)}
+.cip.bad{color:var(--bad);background:rgba(248,113,113,.1)}
+.cip.warn{color:var(--warn);background:rgba(251,191,36,.1)}
+
+.birimler{display:grid;gap:16px;margin-top:20px}
+.birim-ust{display:flex;justify-content:space-between;gap:10px;font-size:14px}
+.birim-ust b{font-weight:500}
+.birim-ust b small{color:var(--dim);font:400 12px var(--m);margin-left:6px}
+.birim-ust span{font:400 12.5px/1.6 var(--m);color:var(--muted)}
+.cubukc{height:8px;border-radius:99px;background:var(--s3);margin-top:8px;overflow:hidden}
+.cubukc i{display:block;height:100%;border-radius:99px;background:var(--blue);width:var(--w)}
+.cubukc i.kritik{background:linear-gradient(90deg,var(--warn),var(--bad))}
+
+.toplayicilar{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:16px}
+.toplayicilar span{display:flex;align-items:center;justify-content:space-between;gap:6px;font:400 12px/1 var(--m);color:var(--muted);padding:8px 9px;border-radius:7px;background:rgba(255,255,255,.025);border:1px solid var(--line);min-width:0}
+.toplayicilar span i{width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none}
+.toplayicilar span.kismi{color:var(--warn);border-color:rgba(251,191,36,.25)}
+.toplayicilar span.kismi i{background:var(--warn)}
+.ozet-satir{display:flex;gap:18px;margin-top:14px;font:400 12.5px/1.4 var(--m);color:var(--muted)}
+.ozet-satir b{color:var(--text);font-weight:500}
+
+.kanallar{width:100%;border-collapse:collapse;margin-top:16px;font-size:13.5px}
+.kanallar th{font:400 11px/1.3 var(--m);letter-spacing:.04em;text-transform:uppercase;color:var(--dim);text-align:right;padding:0 0 8px;font-weight:400}
+.kanallar th:first-child,.kanallar td:first-child{text-align:left}
+.kanallar td{padding:9px 0;border-top:1px solid var(--line);text-align:right;font-family:var(--m);font-size:13px;color:var(--muted)}
+.kanallar td:first-child{font-family:var(--f);color:var(--text);font-size:14px}
+.kanallar .k{color:var(--bad)} .kanallar .h{color:var(--warn)}
+
+.dosya-ic{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.dosya-ic div{padding:12px;border-radius:9px;background:rgba(255,255,255,.025);border:1px solid var(--line)}
+.dosya-ic b{display:block;font-size:22px;font-weight:500;letter-spacing:-.03em}
+.dosya-ic span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.yol{font:400 12px/1.4 var(--m);color:var(--dim);margin-top:12px;overflow-wrap:anywhere}
+
+/* ---------- toplar / toplamaz ---------- */
+.karsi{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:64px}
+.karsi > div{border-radius:var(--r3);border:1px solid var(--line);padding:32px;background:linear-gradient(180deg,var(--s1),var(--bg2))}
+.karsi h3{display:flex;align-items:center;gap:12px;font-size:20px;letter-spacing:-.02em}
+.karsi h3 .ik{width:34px;height:34px;border-radius:9px;display:grid;place-items:center}
+.karsi .evet h3 .ik{background:rgba(74,222,128,.1);color:var(--ok)}
+.karsi .hayir h3 .ik{background:rgba(248,113,113,.1);color:var(--bad)}
+.karsi .alt{color:var(--muted);font-size:14.5px;margin:10px 0 0}
+.kategoriler{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;margin-top:22px}
+.kategoriler div{padding:12px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.5;color:var(--muted)}
+.kategoriler b{display:flex;align-items:center;gap:8px;color:var(--text);font-weight:500;font-size:14.5px;margin-bottom:2px}
+.kategoriler b em{font:500 10.5px/1 var(--m);font-style:normal;letter-spacing:.04em;color:var(--warn);border:1px solid rgba(251,191,36,.35);border-radius:4px;padding:3px 5px}
+.karsi .hayir{background:linear-gradient(180deg,rgba(248,113,113,.06),rgba(248,113,113,.01) 60%),var(--bg2);border-color:rgba(248,113,113,.18)}
+.asla{list-style:none;margin:22px 0 0;padding:0}
+.asla li{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid rgba(248,113,113,.12);font-size:15px}
+.asla li .i{width:15px;height:15px;color:var(--bad)}
+.kod-not{margin-top:22px;padding:14px 16px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid var(--line);font-size:13.5px;color:var(--muted);line-height:1.55}
+.kod-not b{color:var(--text);font-weight:500}
+
+/* ---------- ilkeler ---------- */
+.ilkeler{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:64px;border-radius:var(--r3);overflow:hidden;border:1px solid var(--line);background:var(--line)}
+.ilke{background:var(--bg2);padding:32px 30px;display:flex;flex-direction:column;transition:background .3s}
+.ilke:hover{background:var(--s1)}
+.ilke .ik{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line2);color:var(--blue2);background:rgba(76,141,255,.06)}
+.ilke h3{font-size:18px;letter-spacing:-.02em;margin:22px 0 0}
+.ilke p{color:var(--muted);font-size:15px;margin:10px 0 0;line-height:1.55}
+.ilke .kanit{margin-top:auto;padding-top:20px}
+.ilke .kanit span{display:block;font:400 12px/1.55 var(--m);color:var(--dim);border-top:1px dashed var(--line2);padding-top:14px}
+.ilke .kanit span::before{content:"Kodda  ";color:var(--blue2);white-space:pre}
+
+/* ---------- rapor ---------- */
+.rapor-yer{display:grid;grid-template-columns:260px 1fr;gap:28px;margin-top:64px;align-items:start}
+.bolumler{position:sticky;top:84px;display:grid;gap:2px}
+.bolumler p{font:500 11.5px/1 var(--m);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 12px 12px}
+.bolumler button{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:14.5px;color:var(--muted);transition:all .2s}
+.bolumler button:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.bolumler button.sec{color:var(--text);background:rgba(76,141,255,.1);box-shadow:inset 2px 0 0 var(--blue)}
+.bolumler button:focus-visible{outline:2px solid var(--blue2);outline-offset:1px}
+.bolumler button small{font:400 11px var(--m);color:var(--dim)}
+.tarayici{border-radius:14px;overflow:hidden;border:1px solid var(--line2);background:#0f1319;box-shadow:0 40px 100px -40px rgba(0,0,0,.95),0 0 0 8px rgba(255,255,255,.02)}
+.tarayici .adres{height:42px;display:flex;align-items:center;gap:14px;padding:0 14px;background:#14171d;border-bottom:1px solid var(--line)}
+.tarayici .noktalar{display:flex;gap:7px;flex:none}
+.tarayici .noktalar i{width:11px;height:11px;border-radius:50%;background:#2b313b}
+.tarayici .adres .url{flex:1;min-width:0;height:26px;border-radius:7px;background:#0b0d11;border:1px solid var(--line);font:12px/24px var(--m);color:var(--muted);padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.rapor-ekran{position:relative}
+.tarayici iframe{display:block;width:100%;height:720px;border:0;background:#fff}
+.dosyalar{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.dosyalar a{display:flex;align-items:center;gap:14px;padding:18px;border-radius:var(--r2);border:1px solid var(--line);background:var(--bg2);text-decoration:none;transition:border-color .2s,background .2s;min-width:0}
+.dosyalar a:hover{border-color:var(--line3);background:var(--s1)}
+.dosyalar .ik{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--s2);border:1px solid var(--line2);color:var(--blue2);flex:none}
+.dosyalar b{display:block;font-weight:500;font-size:15px}
+.dosyalar span{display:block;font:400 12px/1.4 var(--m);color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dosyalar div{min-width:0;flex:1}
+.dosyalar .i.ok{width:16px;height:16px;color:var(--dim)}
+
+/* ---------- komut satırı ---------- */
+.cli{display:grid;grid-template-columns:1fr 1.25fr;gap:64px;align-items:start}
+.terminal{border-radius:14px;overflow:hidden;border:1px solid var(--line2);background:#050608;box-shadow:0 40px 100px -40px rgba(0,0,0,.95)}
+.terminal .ust-s{height:40px;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid var(--line);background:#0c0e12;font:12px/1 var(--m);color:var(--dim)}
+.terminal .ust-s .noktalar{display:flex;gap:7px}
+.terminal .ust-s .noktalar i{width:11px;height:11px;border-radius:50%;background:#262b33}
+.terminal pre{margin:0;padding:22px 24px 24px;font:13.5px/1.85 var(--m);color:#cfd6e0;overflow-x:auto;white-space:pre}
+.terminal .y{color:#5d6675}.terminal .k{color:var(--blue2)}.terminal .p{color:var(--ok)}
+.bayraklar{margin-top:28px;border-top:1px solid var(--line)}
+.bayraklar div{display:grid;grid-template-columns:200px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.bayraklar code{color:var(--text);font-size:13px}
+.bayraklar span{color:var(--muted)}
+.cikis-kod{font:400 12.5px/1.6 var(--m);color:var(--dim);margin-top:16px}
+
+.teknik{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:88px;border-top:1px solid var(--line)}
+.teknik div{padding:24px 28px 24px 0;border-bottom:1px solid var(--line)}
+.teknik dt{font:500 11.5px/1 var(--m);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.teknik dd{margin:10px 0 0;font-size:15px;color:var(--text);line-height:1.5}
+.teknik dd span{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.teknik dl,.teknik{margin-bottom:0}
+
+/* ---------- SSS ---------- */
+.sss{display:grid;grid-template-columns:1fr 1.6fr;gap:64px;align-items:start}
+.sss .bas{position:sticky;top:96px}
+.soru{border-bottom:1px solid var(--line)}
+.soru:first-child{border-top:1px solid var(--line)}
+.soru summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 2px;font-size:17px;font-weight:500;letter-spacing:-.015em}
+.soru summary::-webkit-details-marker{display:none}
+.soru summary:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
+.soru summary i{position:relative;width:16px;height:16px;flex:none;color:var(--dim)}
+.soru summary i::before,.soru summary i::after{content:"";position:absolute;left:0;right:0;top:7.25px;height:1.5px;background:currentColor;border-radius:2px;transition:transform .25s}
+.soru summary i::after{transform:rotate(90deg)}
+.soru[open] summary i::after{transform:rotate(0)}
+.soru summary:hover i{color:var(--text)}
+.soru .cevap{padding:0 40px 24px 2px;color:var(--muted);font-size:15.5px;line-height:1.65}
+.soru .cevap p{margin:0 0 10px}
+.soru .cevap p:last-child{margin:0}
+.soru .cevap code{color:var(--text);background:rgba(255,255,255,.05);border-radius:4px;padding:1px 5px}
+
+/* ---------- kapanış ---------- */
+.kapanis{position:relative;padding:0 0 128px}
+.bant{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--line2);padding:88px 40px;text-align:center;background:
+  radial-gradient(60% 90% at 50% 0%,rgba(76,141,255,.25),transparent 70%),
+  linear-gradient(180deg,var(--s1),var(--bg2));isolation:isolate}
+.bant::before{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px) 0 0/40px 40px,
+  linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px) 0 0/40px 40px;
+  -webkit-mask-image:radial-gradient(60% 80% at 50% 0%,#000,transparent);mask-image:radial-gradient(60% 80% at 50% 0%,#000,transparent)}
+.bant h2{font-size:clamp(30px,4.4vw,54px);margin:20px auto 0;max-width:820px}
+.bant p{color:var(--muted);font-size:18px;max-width:620px;margin:18px auto 0}
+.bant .eylem{margin-top:34px}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px}
+footer .sar{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+footer .imza{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--muted)}
+footer .imza img{width:28px;height:28px;border-radius:8px}
+footer .imza b{display:block;color:var(--text);font-weight:500}
+footer nav{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+footer nav a{text-decoration:none}
+footer nav a:hover{color:var(--text)}
+footer .not{width:100%;font-size:12.5px;color:var(--dim);margin:0}
+
+/* ---------- büyük görüntü ---------- */
+dialog{border:0;padding:0;background:transparent;max-width:min(94vw,1280px);max-height:94vh;color:var(--text)}
+dialog::backdrop{background:rgba(3,4,6,.9);backdrop-filter:blur(6px)}
+dialog img{max-height:84vh;width:auto;max-width:100%;border-radius:12px;margin:0 auto;border:1px solid var(--line2)}
+dialog p{color:var(--muted);text-align:center;margin:14px 0 0;font-size:14px}
+dialog .kapat{position:fixed;top:16px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;display:grid;place-items:center}
+dialog .kapat .i{width:18px;height:18px}
+
+/* ---------- hareket (içerik durağanken de görünür) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .js .belir{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .js .belir.gorundu{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- duyarlı ---------- */
+@media (max-width:1080px){
+  :root{--gut:24px}
+  .ust nav{display:none}
+  .ust .sag{margin-left:auto}
+  .kitle{grid-template-columns:1fr}
+  .panel ul{grid-template-columns:1fr}
+  .satir,.satir.ters{grid-template-columns:1fr;gap:36px}
+  .satir.ters .metin{order:0}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .b-puan{grid-column:1/-1;grid-row:auto}
+  .b-koruma,.b-depo,.b-toplama,.b-olay,.b-dosya{grid-column:span 1}
+  .b-dosya{grid-column:1/-1}
+  .karsi{grid-template-columns:1fr}
+  .ilkeler{grid-template-columns:1fr 1fr}
+  .rapor-yer{grid-template-columns:1fr}
+  .bolumler{position:static;display:flex;flex-wrap:wrap;gap:6px}
+  .bolumler p{width:100%;margin:0 0 6px}
+  .bolumler button{border:1px solid var(--line);padding:8px 12px;font-size:13.5px}
+  .bolumler button small{display:none}
+  .bolumler button.sec{box-shadow:none;border-color:rgba(141,183,255,.4)}
+  .cli{grid-template-columns:1fr;gap:40px}
+  .sss{grid-template-columns:1fr;gap:32px}
+  .sss .bas{position:static}
+  .galeri{grid-template-columns:1fr 1fr}
+}
+@media (max-width:1100px){
+  .akis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:6px;margin-top:40px;align-items:start}
+  .akis li{flex-direction:column;gap:8px;text-align:center}
+  .akis li:not(:last-child)::after{display:none}
+  .akis .t{text-align:center}
+  .akis small{display:none}
+  .akis b{font-size:13px;line-height:1.25;white-space:normal}
+}
+@media (max-width:720px){
+  :root{--gut:20px}
+  .akis b{font-size:11.5px}
+  .akis{margin-top:40px}
+  section{padding:88px 0}
+  .ust .sar{height:56px}
+  .ust .sag .btn:not(.ana){display:none}
+  .marka small{display:none}
+  .kahraman{padding:56px 0 24px}
+  .rozet{font-size:12px}
+  h1{font-size:clamp(38px,11vw,52px);margin-top:22px}
+  .giris{font-size:16.5px;margin-top:20px}
+  .eylem{flex-direction:column;align-items:stretch;gap:10px;margin-top:28px}
+  .eylem .btn{height:48px}
+  .alt-yazi{font-size:12px;line-height:1.5;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+  .alt-yazi span+span::before{display:none}
+  .sahne{margin-top:28px}
+  .cerceve{padding:5px;border-radius:14px}
+  .pencere{border-radius:9px}
+  .pencere .cubuk{height:26px;font-size:11px}
+  .pencere .cubuk em b{width:30px;height:26px}
+  .demo-cubuk{flex-direction:column;align-items:stretch;gap:12px}
+  .tur button{padding:8px 10px;font-size:12.5px}
+  .dipnot{font-size:12.5px;text-align:left}
+  .rakamlar{grid-template-columns:1fr 1fr;margin-top:64px}
+  .rakamlar div{padding:20px 18px}
+  .rakamlar div:nth-child(3){border-left:0}
+  .rakamlar div:nth-child(n+3){border-top:1px solid var(--line)}
+  .rakamlar span{font-size:13px}
+  .bas p{font-size:16.5px}
+  .kitle,.bento,.karsi,.ilkeler{margin-top:44px}
+  .panel{padding:24px 20px}
+  .panel h4{font-size:20px}
+  .satirlar{gap:80px;margin-top:56px}
+  .cekim{padding:8px;border-radius:12px}
+  .cekim figcaption{flex-direction:column;gap:2px}
+  .sayfalar{margin-top:72px}
+  .galeri{gap:10px}
+  .galeri figcaption{font-size:13px}
+  .bento{grid-template-columns:1fr}
+  .b-koruma,.b-depo,.b-toplama,.b-olay,.b-dosya{grid-column:1/-1}
+  .kutu{padding:20px}
+  .puan-ic{grid-template-columns:1fr;gap:20px;justify-items:center}
+  .puan-ic > div:last-child{width:100%}
+  .halka{width:170px;height:170px}
+  .halka b{font-size:50px}
+  .dokum div{grid-template-columns:1fr auto;gap:2px 12px}
+  .dokum span{grid-column:1/-1}
+  .kutu-ust{flex-direction:column;gap:4px}
+  .kutu .kaynak{text-align:left}
+  .karsi > div{padding:24px 20px}
+  .kategoriler{grid-template-columns:1fr}
+  .ilkeler{grid-template-columns:1fr}
+  .ilke{padding:26px 22px}
+  .tarayici iframe{height:520px;pointer-events:none}
+  .rapor-ekran .dokun{display:flex}
+  .tarayici .adres .url{text-align:left}
+  .dosyalar{grid-template-columns:1fr}
+  .terminal pre{font-size:12px;padding:18px}
+  .bayraklar div{grid-template-columns:1fr;gap:2px}
+  .teknik{grid-template-columns:1fr;margin-top:64px}
+  .teknik div{padding:20px 0}
+  .soru summary{font-size:16px;padding:20px 2px}
+  .soru .cevap{padding-right:8px}
+  .kapanis{padding-bottom:88px}
+  .bant{padding:56px 22px;border-radius:18px}
+  .bant p{font-size:16.5px}
+  footer .sar{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:420px){
+  .toplayicilar{grid-template-columns:1fr 1fr}
+  .toplayicilar span{font-size:11px;padding:7px}
+  .dosya-ic b{font-size:20px}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add("js")</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-usb" viewBox="0 0 24 24"><rect x="7" y="9" width="10" height="13" rx="2.2"/><path d="M9 9V3h6v6M11 5.5h.01M13 5.5h.01"/></symbol>
+  <symbol id="i-onay" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="m8 12.2 2.8 2.8L16 9.4"/></symbol>
+  <symbol id="i-tara" viewBox="0 0 24 24"><path d="M3 7.5V6a3 3 0 0 1 3-3h1.5M16.5 3H18a3 3 0 0 1 3 3v1.5M21 16.5V18a3 3 0 0 1-3 3h-1.5M7.5 21H6a3 3 0 0 1-3-3v-1.5M7 12h10"/></symbol>
+  <symbol id="i-rapor" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+  <symbol id="i-ekran" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+  <symbol id="i-anahtar" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></symbol>
+  <symbol id="i-pano" viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="4" rx="1"/><path d="M16 4.5h2a2 2 0 0 1 2 2V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+  <symbol id="i-goz" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-agyok" viewBox="0 0 24 24"><path d="m3 3 18 18M8.5 16.4a5 5 0 0 1 6-.8M5 12.9a10 10 0 0 1 4-2.4M19 12.9a10 10 0 0 0-2.6-1.8M2 8.8a15 15 0 0 1 3.7-2.5M22 8.8A15 15 0 0 0 10.6 5M12 20h.01"/></symbol>
+  <symbol id="i-guc" viewBox="0 0 24 24"><path d="M12 2.5v9"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></symbol>
+  <symbol id="i-kalkan" viewBox="0 0 24 24"><path d="M12 3 4.5 6.5v5.6c0 4.4 3.2 7.6 7.5 8.9 4.3-1.3 7.5-4.5 7.5-8.9V6.5z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-kilit" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-anah" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.3-9.3M17 6l3 3M14.5 8.5l2.5 2.5"/></symbol>
+  <symbol id="i-uc" viewBox="0 0 24 24"><path d="m4 17 6-5-6-5M12 19h8"/></symbol>
+  <symbol id="i-tik" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-dis" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-yenile" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-oynat" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+  <symbol id="i-json" viewBox="0 0 24 24"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1"/></symbol>
+  <symbol id="i-dunya" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+</svg>
+
+<header class="ust" id="ust">
+  <div class="sar">
+    <a class="marka" href="#"><img src="ikon.svg" alt="" width="24" height="24">PeraScan <small>Konsept</small></a>
+    <nav aria-label="Sayfa içi">
+      <a href="#urun">Ürün</a><a href="#kimler">Kimler için</a><a href="#bulgular">Bulgular</a><a href="#guvenlik">Güvenlik</a><a href="#rapor">Rapor</a><a href="#sss">SSS</a>
+    </nav>
+    <div class="sag">
+      <a class="btn kucuk" href="rapor/ornek-rapor-tr.html" target="_blank" rel="noopener">Örnek rapor</a>
+      <a class="btn kucuk ana" href="#canli">Canlı dene</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============ KAHRAMAN ============ -->
+<div class="kahraman">
+  <div class="sar">
+    <div class="k-ust">
+      <a class="rozet" href="#guvenlik"><b>v1.0</b>Salt okunur · çevrimdışı · onay odaklı</a>
+      <h1><span class="ilk">Bir USB bellek.</span><span>Eksiksiz bir bilgisayar karnesi.</span></h1>
+      <p class="giris">PeraScan kurulum istemeden çalışır, neye bakacağını önce sorar ve donanımdan güvenlik ayarlarına kadar salt okunur bir envanter çıkarır. Geriye okunaklı bir HTML rapor ile JSON kalır. Hiçbir şey kurmaz, hiçbir ayarı değiştirmez, hiçbir yere veri göndermez.</p>
+      <div class="eylem">
+        <a class="btn ana" href="#canli">Canlı arayüzü dene <svg class="i ok"><use href="#i-ok"/></svg></a>
+        <a class="btn" href="rapor/ornek-rapor-tr.html" target="_blank" rel="noopener">Örnek raporu aç <svg class="i"><use href="#i-dis"/></svg></a>
+      </div>
+      <p class="alt-yazi"><span>Windows 10 (1809+) ve 11</span><span>64 bit</span><span>Türkçe ve English</span></p>
+    </div>
+
+    <ol class="akis" id="akis" aria-label="Çalışma akışı">
+      <li data-a="1"><span class="ik"><svg class="i"><use href="#i-usb"/></svg></span><span class="t"><b>Tak ve çalıştır</b><small>Kurulum yok</small></span></li>
+      <li data-a="2"><span class="ik"><svg class="i"><use href="#i-onay"/></svg></span><span class="t"><b>Kapsamı onayla</b><small>Kategori kategori</small></span></li>
+      <li data-a="3"><span class="ik"><svg class="i"><use href="#i-tara"/></svg></span><span class="t"><b>Salt okunur tara</b><small>14 toplayıcı</small></span></li>
+      <li data-a="4"><span class="ik"><svg class="i"><use href="#i-rapor"/></svg></span><span class="t"><b>Raporu al</b><small>HTML + JSON</small></span></li>
+    </ol>
+
+    <div class="sahne" id="canli">
+      <div class="cerceve">
+        <div class="pencere">
+          <div class="cubuk"><span><img src="ikon.svg" alt="" width="16" height="16">PeraScan</span><em aria-hidden="true"><b><svg viewBox="0 0 10 10"><path d="M0 5h10"/></svg></b><b><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></b><b><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0 0 10"/></svg></b></em></div>
+          <div class="ekran" id="ekran">
+            <iframe id="uyg" src="uygulama/" title="PeraScan arayüzü, örnek verili tanıtım"></iframe>
+            <svg class="imlec" id="imlec" viewBox="0 0 22 22" aria-hidden="true"><path d="M3 2l14.5 8.6-6.4 1.3-3.3 5.8z" fill="#fff" stroke="#07080b" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            <a class="dokun" href="uygulama/" target="_blank" rel="noopener"><span>Arayüzü tam ekranda dene <svg class="i"><use href="#i-dis"/></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-cubuk">
+      <div class="durum" id="durum" data-d="hazir" role="status" aria-live="polite"><i></i><span id="durum-yazi">Canlı arayüz · örnek veri</span><button type="button" id="durum-dugme" hidden></button></div>
+      <div class="tur" role="group" aria-label="Arayüzde bir sayfaya git">
+        <button type="button" data-tara="1">Taramayı başlat</button>
+        <button type="button" data-sayfa="Security">Güvenlik</button>
+        <button type="button" data-sayfa="Report">Puan dökümü</button>
+        <button type="button" data-sayfa="Hardware">Donanım</button>
+        <button type="button" data-sayfa="Events">Olaylar</button>
+        <button type="button" data-sayfa="Privacy">Gizlilik</button>
+      </div>
+    </div>
+    <p class="dipnot">Bu pencere, uygulamanın WPF ekranlarının (koyu tema) tarayıcı için yeniden çizimidir. Tarama bir canlandırmadır ve bu bilgisayardan hiçbir bilgi okunmaz; gösterilen veriler örnek bir ofis bilgisayarına (DEMO-OFIS-01) aittir. Ayrıntı tablolarındaki İngilizce başlıklar uygulamadaki gibidir.</p>
+
+    <div class="rakamlar belir">
+      <div><b>14</b><span>salt okunur toplayıcı, her biri ayrı ayrı onaylanır</span></div>
+      <div><b>0</b><span>ağ bağlantısı; derlemede telemetri kodu yok</span></div>
+      <div><b>0–100</b><span>sağlık puanı, her puanın yazılı gerekçesiyle</span></div>
+      <div><b>TR · EN</b><span>arayüz ve rapor dili, Windows dilini izler</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ KİMLER İÇİN ============ -->
+<section id="kimler">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">Kimler için</span>
+      <h2>Bir bilgisayarın gerçek durumunu bilmesi gereken herkes için.</h2>
+      <p>Aynı tarama, üç farklı iş. Her biri uygulamada bugün çalışan özelliklerle karşılanır.</p>
+    </div>
+    <div class="kitle">
+      <article class="panel belir">
+        <span class="ik"><svg class="i"><use href="#i-ekran"/></svg></span>
+        <h3>BT ekipleri</h3>
+        <h4>Envanteri tahminle değil, dosyayla tutun.</h4>
+        <ul>
+          <li><svg class="i"><use href="#i-tik"/></svg>İşlemci, bellek modülleri, disk modeli ve sağlığı, BIOS sürümü ve sistem seri numarası tek raporda.</li>
+          <li><svg class="i"><use href="#i-tik"/></svg>Kurulu uygulamalar, Microsoft Store paketleri ve .NET çalışma zamanları sürümleriyle listelenir.</li>
+          <li><svg class="i"><use href="#i-tik"/></svg>Komut satırında kategorileri seçip raporu ortak bir klasöre yazdırın; JSON çıktı kendi araçlarınıza girer.</li>
+        </ul>
+        <div class="etiketler"><span>--categories</span><span>--output</span><span>JSON şema 1.0</span></div>
+      </article>
+      <article class="panel belir">
+        <span class="ik"><svg class="i"><use href="#i-anahtar"/></svg></span>
+        <h3>Servis firmaları</h3>
+        <h4>Müşterinin bilgisayarına hiçbir şey kurmadan teşhis.</h4>
+        <ul>
+          <li><svg class="i"><use href="#i-tik"/></svg>USB bellekten çalışır; kapandığında geride hizmet, görev ya da kayıt defteri girdisi bırakmaz.</li>
+          <li><svg class="i"><use href="#i-tik"/></svg>Müşteri neyin inceleneceğini onay ekranında görür ve kendisi onaylar.</li>
+          <li><svg class="i"><use href="#i-tik"/></svg>Dolu disk, bekleyen yeniden başlatma, kapalı güvenlik duvarı profili puanda gerekçesiyle yazılır. Rapor müşteriye tek dosya olarak verilir.</li>
+        </ul>
+        <div class="etiketler"><span>Kurulumsuz</span><span>Gerekçeli puan</span><span>PDF'e basılır</span></div>
+      </article>
+      <article class="panel belir">
+        <span class="ik"><svg class="i"><use href="#i-pano"/></svg></span>
+        <h3>Denetçiler</h3>
+        <h4>Yapılandırma kanıtı, kapsamıyla birlikte.</h4>
+        <ul>
+          <li><svg class="i"><use href="#i-tik"/></svg>Defender, güvenlik duvarı profilleri, BitLocker, UAC, Secure Boot ve Windows Update durumu.</li>
+          <li><svg class="i"><use href="#i-tik"/></svg>Yerel hesaplar, gruplar ve Yöneticiler üyeliği; seçilen aralıkta olay günlüğü özetleri.</li>
+          <li><svg class="i"><use href="#i-tik"/></svg>Her toplayıcının sonucu ayrı yazılır. Okunamayan bir şey eksik sayılmaz, "değerlendirilmedi" diye listelenir.</li>
+        </ul>
+        <div class="etiketler"><span>Toplama durumu</span><span>Yönetici durumu</span><span>Olay günlükleri</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÜRÜN TURU ============ -->
+<section id="urun" class="ayrac">
+  <div class="sar">
+    <div class="bas belir">
+      <span class="kas">Ürün</span>
+      <h2>İzin önce gelir. <span class="sn">Sonra envanter, sonra rapor.</span></h2>
+      <p>Her adım kullanıcının gözü önünde ilerler. Uygulama Windows'un açık ya da koyu temasını ve dilini izler; sol raydaki ayrıntı sayfaları tarama bitene kadar kilitli kalır.</p>
+    </div>
+
+    <div class="satirlar">
+      <div class="satir">
+        <div class="metin belir">
+          <div class="no">01 <em>/ Tarama Yetkilendirmesi</em></div>
+          <h3>Kullanıcı neyin inceleneceğini görür ve seçer.</h3>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span><b>14 kategori</b> tek tek seçilir; onay verilmeden tek bir veri toplanmaz.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span><b>⚿ işareti</b>, yönetici hakkıyla daha fazla veri döndüren kategorileri gösterir.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span><b>Dosya envanteri varsayılan olarak kapalıdır</b>; yalnızca elle eklenen klasörlerde dosya üstverisi kaydedilir.</span></li>
+          </ul>
+        </div>
+        <figure class="cekim belir"><button type="button" data-buyuk="ekran/izin.webp" data-ad="Tarama Yetkilendirmesi"><span class="kirp"><img src="ekran/izin.webp" alt="Tarama Yetkilendirmesi penceresi: 14 kategori onay kutusu ve seçilen klasör" loading="lazy" decoding="async" width="1920" height="1280"></span></button><figcaption><span>ConsentWindow</span><span>Büyütmek için tıklayın</span></figcaption></figure>
+      </div>
+
+      <div class="satir ters">
+        <div class="metin belir">
+          <div class="no">02 <em>/ Yönetici yetkileri</em></div>
+          <h3>Yetki istenir, asla zorla alınmaz.</h3>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Uygulama <b>standart kullanıcı</b> olarak başlar.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Gerekirse hangi kategorilerin etkileneceğini söyler ve üç seçenek sunar: <b>yönetici olarak yeniden başlat</b>, <b>yetkisiz devam et</b> ya da <b>iptal</b>.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Yükseltme yalnızca Windows'un kendi UAC penceresiyle olur. Reddedilirse tarama yetkisiz sürer ve etkilenen bölümler raporda işaretlenir.</span></li>
+          </ul>
+        </div>
+        <figure class="cekim belir"><button type="button" data-buyuk="ekran/yetki.webp" data-ad="Yönetici yetkileri"><span class="kirp" style="--z:1.6;--x:-30%;--y:-30%"><img src="ekran/yetki.webp" alt="Yönetici Yetkileri iletişim kutusu: yeniden başlat, yetkisiz devam et, iptal" loading="lazy" decoding="async" width="1920" height="1280"></span></button><figcaption><span>ElevationWindow</span><span>Büyütmek için tıklayın</span></figcaption></figure>
+      </div>
+
+      <div class="satir">
+        <div class="metin belir">
+          <div class="no">03 <em>/ Tarama</em></div>
+          <h3>Ne yapıldığını görerek tarayın.</h3>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>İlerleme, çalışan toplayıcı, o anki işlem, bulunan öğe, geçen ve kalan süre <b>canlı</b> görünür.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Bir toplayıcının hatası taramayı durdurmaz; her toplayıcının sonucu rapora ayrı yazılır.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>İptal edilen tarama, tamamlanan bölümlerle <b>"iptal edildi"</b> damgalı bir rapor bırakır.</span></li>
+          </ul>
+        </div>
+        <figure class="cekim belir"><button type="button" data-buyuk="ekran/tarama.webp" data-ad="Tarama"><span class="kirp" style="--z:1.3;--x:-27%"><img src="ekran/tarama.webp" alt="Tarama ekranı: ilerleme çubuğu, çalışan toplayıcı, bulunan öğe ve kalan süre" loading="lazy" decoding="async" width="1920" height="1280"></span></button><figcaption><span>ScanView</span><span>Büyütmek için tıklayın</span></figcaption></figure>
+      </div>
+
+      <div class="satir ters">
+        <div class="metin belir">
+          <div class="no">04 <em>/ Sonuç</em></div>
+          <h3>Puan, uyarılar ve rapor tek ekranda.</h3>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Sağlık puanı, süre, bulunan öğe, uyarı ve hata sayısı.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span><b>Raporu aç</b>, <b>JSON dışa aktar</b>, <b>rapor klasörünü aç</b> ya da onay alarak <b>raporu sil</b>.</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Sol raydaki dokuz ayrıntı sayfası tarama bitince açılır.</span></li>
+          </ul>
+        </div>
+        <figure class="cekim belir"><button type="button" data-buyuk="ekran/sonuc.webp" data-ad="Tarama sonucu"><span class="kirp" style="--z:1.3;--x:-27%"><img src="ekran/sonuc.webp" alt="Tarama sonucu: sağlık puanı 60, süre 41,6 saniye, 7.762 öğe" loading="lazy" decoding="async" width="1920" height="1280"></span></button><figcaption><span>Örnek sonuç · DEMO-OFIS-01</span><span>Büyütmek için tıklayın</span></figcaption></figure>
+      </div>
+    </div>
+
+    <div class="sayfalar">
+      <div class="sayfalar-ust belir">
+        <div><h3>Dokuz ayrıntı sayfası</h3><p>Donanım, Yazılım, Ağ, Güvenlik, Depolama, Süreçler, Olaylar, Dosyalar ve Rapor.</p></div>
+        <a class="btn kucuk" href="#canli">Hepsini canlı gezin <svg class="i ok"><use href="#i-ok"/></svg></a>
+      </div>
+      <div class="galeri" id="galeri">
+        <figure class="belir"><button type="button" data-buyuk="ekran/guvenlik.webp" data-ad="Güvenlik"><img src="ekran/guvenlik.webp" alt="Güvenlik sayfası" loading="lazy" decoding="async" width="1920" height="1280"></button><figcaption><b>Güvenlik</b> · koruma, güvenlik duvarı, güncelleme</figcaption></figure>
+        <figure class="belir"><button type="button" data-buyuk="ekran/donanim.webp" data-ad="Donanım"><img src="ekran/donanim.webp" alt="Donanım sayfası" loading="lazy" decoding="async" width="1920" height="1280"></button><figcaption><b>Donanım</b> · işlemci, bellek, ekran kartı</figcaption></figure>
+        <figure class="belir"><button type="button" data-buyuk="ekran/olaylar.webp" data-ad="Olay günlükleri"><img src="ekran/olaylar.webp" alt="Olay günlükleri sayfası" loading="lazy" decoding="async" width="1920" height="1280"></button><figcaption><b>Olaylar</b> · kanal özeti ve son kayıtlar</figcaption></figure>
+        <figure class="belir"><button type="button" data-buyuk="ekran/surecler.webp" data-ad="Süreçler"><img src="ekran/surecler.webp" alt="Süreçler sayfası" loading="lazy" decoding="async" width="1920" height="1280"></button><figcaption><b>Süreçler</b> · imzalar, hizmetler, görevler</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BULGULAR (BENTO) ============ -->
+<section id="bulgular" class="ayrac">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">Bulgular</span>
+      <h2>Her sayının yanında gerekçesi durur.</h2>
+      <p>Aşağıdaki değerler, örnek ofis bilgisayarı DEMO-OFIS-01 için uygulamanın kendi rapor motoruyla üretilen rapordan alındı.</p>
+    </div>
+
+    <div class="bento">
+      <article class="kutu b-puan belir">
+        <div class="kutu-ust"><h3>Sağlık puanı</h3><span class="kaynak">HealthScore · 14 faktör</span></div>
+        <p class="ac">Puan 100'den başlar ve yalnızca adı konmuş, açıklanmış bulgular için düşer.</p>
+        <div class="puan-ic">
+          <div>
+            <div class="halka" role="img" aria-label="Örnek sağlık puanı 60 üzerinden 100, Fair">
+              <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="iz" cx="60" cy="60" r="52"/><circle class="dolu" id="halka-dolu" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="130.69"/></svg>
+              <div><b>60</b><small>Fair</small></div>
+            </div>
+            <div class="olcek" aria-hidden="true"><span>0–54</span><span class="bu">55+</span><span>75+</span><span>90+</span></div>
+          </div>
+          <div class="dokum">
+            <div><span>Depolama</span><em>D: sürücüsünde yalnızca %4,7 boş alan var.</em><b>−12</b></div>
+            <div><span>Güvenlik</span><em>Güvenlik duvarı bir profilde (Public) kapalı.</em><b>−9</b></div>
+            <div><span>Güncelleme</span><em>Windows, güncellemeleri bitirmek için yeniden başlatma bekliyor.</em><b>−8</b></div>
+            <div><span>Güvenlik</span><em>Sistem birimi şifrelenmemiş (BitLocker kapalı).</em><b>−6</b></div>
+            <div><span>Kararlılık</span><em>Seçilen aralıkta 101 hata olayı kaydedilmiş.</em><b>−5</b></div>
+            <div><span>9 faktör</span><em>Gerçek zamanlı koruma, güncel imzalar, UAC, Secure Boot, C: boş alanı ve diğerleri.</em><b class="sifir">0</b></div>
+            <div class="top"><span>Toplam</span><em>100 − 40</em><b>60</b></div>
+          </div>
+        </div>
+        <p class="uyari-not">Puan bir yapılandırma hijyeni özetidir; antivirüs kararı, zafiyet taraması ya da uyumluluk denetimi değildir ve rapor bunu açıkça yazar. Okunamayan bir faktör puan kaybettirmez.</p>
+      </article>
+
+      <article class="kutu b-koruma belir">
+        <div class="kutu-ust"><h3>Koruma durumu</h3><span class="kaynak">Security · Protection status</span></div>
+        <div class="durumlar">
+          <div><span>Defender real-time</span><i class="cip ok">Enabled</i></div>
+          <div><span>Tamper protection</span><i class="cip ok">Enabled</i></div>
+          <div><span>Firewall</span><i class="cip bad">Disabled</i></div>
+          <div><span>BitLocker (system volume)</span><i class="cip bad">Disabled</i></div>
+          <div><span>User Account Control</span><i class="cip ok">Enabled</i></div>
+          <div><span>Secure Boot</span><i class="cip ok">Enabled</i></div>
+        </div>
+      </article>
+
+      <article class="kutu b-depo belir">
+        <div class="kutu-ust"><h3>Depolama</h3><span class="kaynak">Storage · Volumes</span></div>
+        <div class="birimler">
+          <div><div class="birim-ust"><b>C:<small>Windows · NVMe SSD</small></b><span>%38,8 boş</span></div><div class="cubukc"><i style="--w:61.2%"></i></div></div>
+          <div><div class="birim-ust"><b>D:<small>Ortak · SATA HDD</small></b><span style="color:var(--bad)">%4,7 boş</span></div><div class="cubukc"><i class="kritik" style="--w:95.3%"></i></div></div>
+          <div><div class="birim-ust"><b>E:<small>USB · PeraScan burada</small></b><span>%65,2 boş</span></div><div class="cubukc"><i style="--w:34.8%"></i></div></div>
+        </div>
+      </article>
+
+      <article class="kutu b-toplama belir">
+        <div class="kutu-ust"><h3>Toplama durumu</h3><span class="kaynak">41,6 sn</span></div>
+        <div class="toplayicilar">
+          <span>Hardware<i></i></span><span>OperatingSystem<i></i></span><span>Software<i></i></span><span>Storage<i></i></span>
+          <span>Network<i></i></span><span>Security<i></i></span><span>Users<i></i></span><span>Processes<i></i></span>
+          <span>Services<i></i></span><span>Startup<i></i></span><span>ScheduledTasks<i></i></span><span class="kismi" title="Kanal başına 1000 olay sınırına ulaşıldı">EventLogs<i></i></span>
+          <span>FileSystem<i></i></span><span>Performance<i></i></span>
+        </div>
+        <div class="ozet-satir"><span><b>13</b> Success</span><span><b>1</b> Partial</span><span><b>7.762</b> öğe</span></div>
+      </article>
+
+      <article class="kutu b-olay belir">
+        <div class="kutu-ust"><h3>Olay günlükleri</h3><span class="kaynak">Son 7 gün</span></div>
+        <table class="kanallar">
+          <thead><tr><th>Kanal</th><th>Kritik</th><th>Hata</th><th>Uyarı</th></tr></thead>
+          <tbody>
+            <tr><td>System</td><td class="k">2</td><td class="h">37</td><td>112</td></tr>
+            <tr><td>Application</td><td>0</td><td class="h">64</td><td>48</td></tr>
+            <tr><td>Security</td><td>0</td><td>0</td><td>3</td></tr>
+          </tbody>
+        </table>
+        <p class="ac" style="margin-top:12px;font-size:13px">System ve Security kanallarında 1000 olay sınırına ulaşıldı; rapor bunu uyarı olarak yazar.</p>
+      </article>
+
+      <article class="kutu b-dosya belir">
+        <div class="kutu-ust"><h3>Dosya envanteri</h3><span class="kaynak">İsteğe bağlı</span></div>
+        <div class="dosya-ic">
+          <div><b>4.812</b><span>dosya, yalnızca üstveri</span></div>
+          <div><b>36 GB</b><span>toplam boyut</span></div>
+          <div><b>SHA-256</b><span>isteğe bağlı özet</span></div>
+          <div><b>2</b><span>olası yinelenen grup</span></div>
+        </div>
+        <p class="yol">D:\Ortak\Projeler · kullanıcı tarafından seçildi</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPLAR / TOPLAMAZ ============ -->
+<section id="sinirlar" class="ayrac">
+  <div class="sar">
+    <div class="bas belir">
+      <span class="kas">Veri sınırları</span>
+      <h2>Teknik envanter evet. <span class="sn">Kişisel sır asla.</span></h2>
+      <p>Yalnızca onay ekranında işaretlenen kategoriler toplanır. Bu sınırlar bir ayar değil: uygulamada yasaklı verileri okuyacak bir kod yolu yok.</p>
+    </div>
+    <div class="karsi">
+      <div class="evet belir">
+        <h3><span class="ik"><svg class="i"><use href="#i-tik"/></svg></span>Toplanır, onayınızla</h3>
+        <p class="alt">On dört kategori, her biri ayrı bir salt okunur toplayıcı.</p>
+        <div class="kategoriler">
+          <div><b>Donanım</b>İşlemci, bellek modülleri, ekran kartı, anakart, BIOS/UEFI, monitörler, USB, pil</div>
+          <div><b>İşletim sistemi</b>Sürüm, yapı, kurulum tarihi, dil, saat dilimi, açık kalma süresi, etki alanı</div>
+          <div><b>Yazılım</b>Kurulu uygulamalar, Store paketleri, .NET çalışma zamanları</div>
+          <div><b>Depolama</b>Birimler ve doluluk; fiziksel diskler, veri yolu ve sağlık</div>
+          <div><b>Ağ</b>Bağdaştırıcılar, IPv4/IPv6, ağ geçidi, DNS, DHCP, vekil sunucu</div>
+          <div><b>Güvenlik</b>Defender, güvenlik duvarı, BitLocker, UAC, Secure Boot, Windows Update</div>
+          <div><b>Kullanıcılar</b>Geçerli kullanıcı, yerel hesaplar ve gruplar, Yöneticiler üyeliği</div>
+          <div><b>Süreçler, hizmetler, başlangıç, görevler</b>Dört ayrı toplayıcı; süreç imzaları ve başlangıç öğeleri dahil</div>
+          <div><b>Olay günlükleri</b>Seçilen aralıkta kritik, hata ve uyarı özetleri</div>
+          <div><b>Performans</b>Tarama sırasında işlemci, bellek, disk ve ağ örneklemesi</div>
+          <div><b>Dosyalar <em>İsteğe bağlı</em></b>Yalnızca seçilen klasörlerde üstveri; istenirse SHA-256 ve yinelenen tespiti</div>
+        </div>
+      </div>
+      <div class="hayir belir">
+        <h3><span class="ik"><svg class="i"><use href="#i-x"/></svg></span>Asla toplanmaz</h3>
+        <p class="alt">Hiçbir ayar, argüman ya da kod yolu bunları okumaz.</p>
+        <ul class="asla">
+          <li><svg class="i"><use href="#i-x"/></svg>Parolalar ve parola özetleri</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Kimlik doğrulama belirteçleri, oturum çerezleri</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Tarayıcıda kayıtlı kimlik bilgileri</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Özel anahtarlar, DPAPI korumalı veriler</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Kimlik Bilgisi Yöneticisi kayıtları</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Wi-Fi anahtarları, VPN kimlik bilgileri</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Ödeme bilgileri, mesaj içerikleri</li>
+          <li><svg class="i"><use href="#i-x"/></svg>Herhangi bir dosyanın içeriği</li>
+        </ul>
+        <p class="kod-not"><b>Testle güvence altında.</b> Kullanıcı hesabı modelinde adı "Password", "Hash" ya da "Token" içeren bir alan bulunmadığını bir birim testi doğrular.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GÜVENLİK İLKELERİ ============ -->
+<section id="guvenlik" class="ayrac">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">Güvenlik ilkeleri</span>
+      <h2>Güvenceler bir ayar değil, mimarinin parçası.</h2>
+      <p>Her ilke kodda doğrulanabilir biçimde uygulanır. Erişim yardımcıları bilerek küçük tutuldu; bir iddia hızla kontrol edilebilsin diye.</p>
+    </div>
+    <div class="ilkeler">
+      <article class="ilke belir">
+        <span class="ik"><svg class="i"><use href="#i-goz"/></svg></span>
+        <h3>Salt okunur</h3>
+        <p>Bilgisayarda hiçbir ayarı, dosyayı ya da yapılandırmayı değiştirmez.</p>
+        <div class="kanit"><span>Kayıt defteri anahtarları yalnızca okuma kipinde açılır; WMI katmanı SELECT dışındaki sorguları reddeder.</span></div>
+      </article>
+      <article class="ilke belir">
+        <span class="ik"><svg class="i"><use href="#i-agyok"/></svg></span>
+        <h3>Ağ iletişimi yok</h3>
+        <p>HTTP, DNS ya da soket bağlantısı kurmaz. Güncelleme denetimi, bulut eşitleme ve çökme raporlayıcı yok.</p>
+        <div class="kanit"><span>Telemetri ayarı kalıcı olarak kapalıdır; açılamadığını bir birim testi doğrular.</span></div>
+      </article>
+      <article class="ilke belir">
+        <span class="ik"><svg class="i"><use href="#i-onay"/></svg></span>
+        <h3>Önce onay</h3>
+        <p>Onay verilmeden tek bir veri toplanmaz. Komut satırında argümanlar onay yerine geçer ve plan taramadan önce yazdırılır.</p>
+        <div class="kanit"><span>Dosya sistemi kategorisi en az bir klasör seçilmeden etkinleştirilemez.</span></div>
+      </article>
+      <article class="ilke belir">
+        <span class="ik"><svg class="i"><use href="#i-guc"/></svg></span>
+        <h3>Geride iz yok</h3>
+        <p>Kurulum, hizmet, zamanlanmış görev, Run anahtarı ya da arka plan süreci yok. Pencere kapanınca uygulama da kapanır.</p>
+        <div class="kanit"><span>Rapor, günlük ve ayarlar programın yanına yazılır; bellek salt okunursa yalnızca %LOCALAPPDATA%\PeraScan kullanılır.</span></div>
+      </article>
+      <article class="ilke belir">
+        <span class="ik"><svg class="i"><use href="#i-anah"/></svg></span>
+        <h3>Yetki zorlanmaz</h3>
+        <p>Standart kullanıcı olarak başlar. Yönetici hakkı yalnızca Windows'un UAC isteğiyle alınır; reddedilirse yetkisiz devam eder.</p>
+        <div class="kanit"><span>Uygulama bildirimi asInvoker; requireAdministrator kullanılmaz.</span></div>
+      </article>
+      <article class="ilke belir">
+        <span class="ik"><svg class="i"><use href="#i-kalkan"/></svg></span>
+        <h3>Windows güvenliğine saygı</h3>
+        <p>Defender, güvenlik duvarı, UAC ve BitLocker okunabildiği kadar okunur, asla değiştirilmez. Erişim reddi aşılmaz, raporda sonuç olarak yazılır.</p>
+        <div class="kanit"><span>Junction ve yeniden ayrıştırma noktaları izlenmez; erişim izni olmayan klasörler "atlandı" olarak kaydedilir.</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAPOR ============ -->
+<section id="rapor" class="ayrac">
+  <div class="sar">
+    <div class="bas belir">
+      <span class="kas">Rapor</span>
+      <h2>Tek dosya. <span class="sn">Çevrimdışı açılır, PDF'e basılır.</span></h2>
+      <p>Yönetici özeti, gerekçeli puan dökümü ve her kategori için tablolar. Dış bağlantı, betik ya da yazı tipi içermez; e-postaya eklenir, internetsiz açılır. Aynı veri, araçlar için şema sürümlü JSON olarak da yazılır.</p>
+    </div>
+    <div class="rapor-yer">
+      <div class="bolumler belir" role="group" aria-label="Rapor bölümüne git">
+        <p>Örnek rapordan</p>
+        <button type="button" class="sec" data-bolum="summary">Yönetici özeti <small>01</small></button>
+        <button type="button" data-bolum="security">Güvenlik <small>07</small></button>
+        <button type="button" data-bolum="storage">Depolama <small>04</small></button>
+        <button type="button" data-bolum="hardware">Donanım <small>03</small></button>
+        <button type="button" data-bolum="events">Olay günlükleri <small>13</small></button>
+        <button type="button" data-bolum="files">Dosya envanteri <small>14</small></button>
+        <button type="button" data-bolum="collection">Toplama durumu <small>16</small></button>
+      </div>
+      <div class="tarayici belir">
+        <div class="adres"><span class="noktalar" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">E:\PeraScan\Reports\PeraScan_DEMO-OFIS-01_20261106-101400.html</span></div>
+        <div class="rapor-ekran"><iframe id="rapor-cerceve" src="rapor/ornek-rapor-tr.html" title="PeraScan örnek raporu (Türkçe)" loading="lazy"></iframe><a class="dokun" href="rapor/ornek-rapor-tr.html" target="_blank" rel="noopener"><span>Raporu tam ekranda aç <svg class="i"><use href="#i-dis"/></svg></span></a></div>
+      </div>
+    </div>
+    <div class="dosyalar">
+      <a class="belir" href="rapor/ornek-rapor-tr.html" target="_blank" rel="noopener"><span class="ik"><svg class="i"><use href="#i-rapor"/></svg></span><div><b>Türkçe rapor</b><span>ornek-rapor-tr.html</span></div><svg class="i ok"><use href="#i-dis"/></svg></a>
+      <a class="belir" href="rapor/ornek-rapor-en.html" target="_blank" rel="noopener"><span class="ik"><svg class="i"><use href="#i-dunya"/></svg></span><div><b>English report</b><span>ornek-rapor-en.html</span></div><svg class="i ok"><use href="#i-dis"/></svg></a>
+      <a class="belir" href="rapor/ornek-rapor.json" target="_blank" rel="noopener"><span class="ik"><svg class="i"><use href="#i-json"/></svg></span><div><b>Ham veri</b><span>ornek-rapor.json · şema 1.0</span></div><svg class="i ok"><use href="#i-dis"/></svg></a>
+    </div>
+    <p class="dipnot" style="text-align:left;margin-left:0">Bu rapor, uygulamanın kendi rapor motoruyla (PeraScan.Reporting) örnek bir bilgisayar verisinden üretildi; içeriği gerçek bir makineye ait değildir. Rapor, açıldığı tarayıcının açık ya da koyu temasını izler.</p>
+  </div>
+</section>
+
+<!-- ============ KOMUT SATIRI ============ -->
+<section id="cli" class="ayrac">
+  <div class="sar">
+    <div class="cli">
+      <div class="belir">
+        <div class="bas">
+          <span class="kas">Komut satırı</span>
+          <h2>Toplu denetim için aynı kurallar.</h2>
+          <p>Argümanlar onay yerine geçer: toplanacaklar taramadan önce yazdırılır, süreç kendini asla yükseltmez. Yönetici hakkı gereken kategoriler için yükseltilmiş bir komut isteminden başlatılır.</p>
+        </div>
+        <div class="bayraklar">
+          <div><code>-s, --scan</code><span>Taramayı çalıştırır ve raporu yazar.</span></div>
+          <div><code>-o, --output &lt;klasör&gt;</code><span>Rapor çıktı klasörü.</span></div>
+          <div><code>-c, --categories &lt;liste&gt;</code><span>Virgülle ayrılmış kategoriler. Varsayılan: dosya sistemi hariç hepsi.</span></div>
+          <div><code>-f, --folder &lt;klasör&gt;</code><span>Üstveri envanteri için bir klasörü yetkilendirir; tekrarlanabilir.</span></div>
+          <div><code>--event-range</code><span><code>Last24Hours</code>, <code>Last7Days</code> ya da <code>Last30Days</code>.</span></div>
+          <div><code>--max-events &lt;n&gt;</code><span>Kanal başına olay sınırı; varsayılan 1000.</span></div>
+          <div><code>--hash-files</code><span>Envanterdeki dosyalar için SHA-256; varsayılan kapalı.</span></div>
+        </div>
+        <p class="cikis-kod">Çıkış kodları: 0 başarılı · 2 geçersiz argüman · 3 tarama çalıştı, rapor yazılamadı</p>
+      </div>
+      <div class="terminal belir">
+        <div class="ust-s"><span class="noktalar" aria-hidden="true"><i></i><i></i><i></i></span>PowerShell · E:\PeraScan</div>
+<pre><span class="y"># her şey (dosya envanteri hariç)</span>
+<span class="p">PS&gt;</span> <span class="k">.\PeraScan.exe</span> --scan
+
+<span class="y"># raporu başka bir klasöre yaz</span>
+<span class="p">PS&gt;</span> <span class="k">.\PeraScan.exe</span> --scan --output D:\Reports
+
+<span class="y"># yalnızca seçilen kategoriler</span>
+<span class="p">PS&gt;</span> <span class="k">.\PeraScan.exe</span> --scan --categories hardware,software,security
+
+<span class="y"># tek klasör için dosya üstverisi + SHA-256</span>
+<span class="p">PS&gt;</span> <span class="k">.\PeraScan.exe</span> --scan --categories filesystem `
+      --folder D:\Projeler --hash-files
+
+<span class="y"># son 30 günün olayları, kanal başına 500 kayıt</span>
+<span class="p">PS&gt;</span> <span class="k">.\PeraScan.exe</span> --scan --event-range Last30Days --max-events 500</pre>
+      </div>
+    </div>
+
+    <dl class="teknik belir">
+      <div><dt>Platform</dt><dd>Windows 10 (1809 ve sonrası), Windows 11<span>64 bit (x64)</span></dd></div>
+      <div><dt>Çalışma biçimi</dt><dd>Kendi içinde taşınabilir yayın<span>.NET 8 · WPF; .NET kurulumu gerekmez, isteğe bağlı tek .exe</span></dd></div>
+      <div><dt>Çıktı</dt><dd>HTML ve JSON, her tarama için<span>PeraScan_&lt;MAKİNE&gt;_&lt;tarih-saat&gt; adıyla</span></dd></div>
+      <div><dt>Dil ve tema</dt><dd>Türkçe ve İngilizce<span>Windows dilini ve açık/koyu temasını izler</span></dd></div>
+      <div><dt>Mimari</dt><dd>Yedi katmanlı proje<span>Çekirdek, güvenlik, altyapı, toplayıcılar, raporlama, arayüz, uygulama</span></dd></div>
+      <div><dt>Doğrulama</dt><dd>Üç test projesi<span>Tarama motoru, puanlama, toplayıcılar, rapor biçimi ve komut satırı</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ SSS ============ -->
+<section id="sss" class="ayrac">
+  <div class="sar sss">
+    <div class="bas belir">
+      <span class="kas">Sık sorulanlar</span>
+      <h2>Kısa ve net cevaplar.</h2>
+      <p>Cevaplar uygulamanın kaynak kodu ve belgeleriyle birebir uyumludur.</p>
+    </div>
+    <div class="belir">
+      <details class="soru" open>
+        <summary>Kurulum gerekir mi?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Hayır. Yayın klasörü USB belleğe kopyalanır ve <code>PeraScan.exe</code> çalıştırılır. Uygulama kendi içinde taşınabilir yayınlandığı için ayrıca .NET kurmak da gerekmez.</p><p>Kaldırmak için klasörü silmek yeterlidir; geride başka bir şey kalmaz.</p></div>
+      </details>
+      <details class="soru">
+        <summary>İnternete bağlanır mı?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Hayır. Uygulamada HTTP istemcisi, güncelleme denetimi, çökme raporlayıcı ya da telemetri yok. Windows Update durumu bile yerel kayıtlardan okunur; çevrimiçi güncelleme araması başlatılmaz.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Yönetici hakkı şart mı?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Hayır. Uygulama standart kullanıcı olarak başlar. Güvenlik, Süreçler, Zamanlanmış Görevler, Olay Günlükleri ve Kullanıcılar yönetici hakkıyla daha fazla veri döndürür; uygulama bunu söyler ve Windows UAC ile yeniden başlatmayı önerir.</p><p>Yetki vermezseniz tarama yine çalışır, etkilenen bölümler raporda "kullanılamıyor" olarak işaretlenir.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Hangi Windows sürümlerinde çalışır?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Windows 10 (1809 ve sonrası) ile Windows 11'de, 64 bit sistemlerde çalışır. BitLocker durumu için yönetici hakkı ve BitLocker destekleyen bir Windows sürümü gerekir.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Rapor nereye kaydedilir?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Varsayılan olarak programın yanındaki <code>Reports</code> klasörüne, yani çoğunlukla USB belleğin kendisine. Her tarama için <code>PeraScan_&lt;MAKİNE&gt;_&lt;tarih-saat&gt;</code> adıyla bir HTML ve bir JSON dosyası yazılır.</p><p>Bellek yazmaya kapalıysa rapor <code>%LOCALAPPDATA%\PeraScan\Reports</code> klasörüne yazılır ve uygulama bunu söyler. Klasör Ayarlar'dan ya da <code>--output</code> ile değiştirilebilir.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Kişisel veri toplar mı?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Parola, belirteç, çerez, anahtar, ödeme bilgisi, mesaj ya da dosya içeriği asla toplanmaz. Ancak bir envanter raporu doğası gereği bilgisayar adı, kullanıcı adları, SID'ler, MAC adresleri ve donanım seri numaraları içerir; rapor hassas operasyonel veri gibi saklanmalıdır.</p><p>Raporlar tek tıkla silinir. Silme işlemi yalnızca <code>PeraScan_*</code> dosyalarını kapsar, klasördeki başka dosyalara dokunmaz.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Tarama ne kadar sürer?<i aria-hidden="true"></i></summary>
+        <div class="cevap"><p>Modern bir bilgisayarda donanım, yazılım ve sistem taraması bir dakikanın çok altında biter. Büyük bir klasör envanteri ve SHA-256 özeti süreyi uzatır. Örnek raporda, dosya envanteri dahil 14 kategorinin tamamı 41,6 saniye sürdü.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KAPANIŞ ============ -->
+<section class="kapanis">
+  <div class="sar">
+    <div class="bant belir">
+      <span class="kas">Perabayt</span>
+      <h2>PeraScan'i kurumunuza uyarlayalım.</h2>
+      <p>Envanter, servis ya da denetim sürecinize göre kategorileri, rapor biçimini ve dağıtımı birlikte şekillendirelim.</p>
+      <div class="eylem">
+        <a class="btn ana" href="https://perabayt-new.vercel.app/iletisim">PeraScan'i kurumunuza uyarlayalım <svg class="i ok"><use href="#i-ok"/></svg></a>
+        <a class="btn" href="https://perabayt-new.vercel.app/urunler#konsept">Diğer çalışmalarımız</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="sar">
+    <div class="imza"><img src="ikon.svg" alt="" width="28" height="28"><div><b>PeraScan</b>Perabayt tarafından tasarlandı ve geliştirildi · Konsept çalışma</div></div>
+    <nav aria-label="Alt bağlantılar"><a href="#canli">Canlı arayüz</a><a href="rapor/ornek-rapor-tr.html" target="_blank" rel="noopener">Örnek rapor</a><a href="https://perabayt-new.vercel.app/urunler#konsept">Diğer çalışmalar</a><a href="https://perabayt-new.vercel.app/iletisim">İletişim</a></nav>
+    <p class="not">Tanıtım sayfası: gösterilen bilgisayar ve tüm değerler örnektir.</p>
+  </div>
+</footer>
+
+<dialog id="buyuk" aria-label="Ekran görüntüsü">
+  <button class="kapat" type="button" aria-label="Kapat"><svg class="i"><use href="#i-x"/></svg></button>
+  <img alt="">
+  <p></p>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+  var az = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (s) { return document.querySelector(s); };
+
+  /* ---- üst çubuk: kaydırınca çizgi, etkin bölüm ---- */
+  var ust = $("#ust");
+  var kaydi = function () { ust.classList.toggle("kaydi", scrollY > 8); };
+  addEventListener("scroll", kaydi, { passive: true }); kaydi();
+  if ("IntersectionObserver" in window) {
+    var baglar = {};
+    document.querySelectorAll(".ust nav a").forEach(function (a) { baglar[a.getAttribute("href").slice(1)] = a; });
+    var bo = new IntersectionObserver(function (g) {
+      g.forEach(function (e) {
+        var a = baglar[e.target.id]; if (!a) return;
+        if (e.isIntersecting) { Object.keys(baglar).forEach(function (k) { baglar[k].classList.remove("aktif"); }); a.classList.add("aktif"); }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    Object.keys(baglar).forEach(function (id) { var s = document.getElementById(id); if (s) bo.observe(s); });
+
+    /* ---- belirme ---- */
+    var ro = new IntersectionObserver(function (g) {
+      g.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("gorundu"); ro.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.01 });
+    document.querySelectorAll(".belir").forEach(function (el) { ro.observe(el); });
+
+    /* ---- puan halkası ---- */
+    var dolu = $("#halka-dolu"), C = 326.73;
+    if (!az) {
+      dolu.style.transition = "none"; dolu.style.strokeDashoffset = C;
+      requestAnimationFrame(function () { dolu.style.transition = ""; });
+      var ho = new IntersectionObserver(function (g) {
+        if (g[0].isIntersecting) { dolu.style.strokeDashoffset = (C * 0.4).toFixed(2); ho.disconnect(); }
+      }, { threshold: 0.4 });
+      ho.observe(dolu);
+    }
+  } else {
+    document.querySelectorAll(".belir").forEach(function (el) { el.classList.add("gorundu"); });
+  }
+
+  /* ---- canlı pencere: ölçekleme ---- */
+  var ekran = $("#ekran"), uyg = $("#uyg"), imlec = $("#imlec"), olcek = 1;
+  function olcekle() {
+    var w = ekran.clientWidth;
+    var W = w >= 1000 ? Math.min(w, 1120) : 900;
+    var H = w >= 1000 ? 700 : 620;
+    olcek = Math.min(1, w / W);
+    uyg.style.width = W + "px"; uyg.style.height = H + "px";
+    uyg.style.transform = olcek < 1 ? "scale(" + olcek + ")" : "";
+    ekran.style.height = Math.round(H * olcek) + "px";
+    ekran.classList.toggle("dar", olcek < 0.75);
+  }
+  olcekle();
+  addEventListener("resize", olcekle);
+
+  /* ---- akış adımları uygulamanın gerçek durumunu izler ---- */
+  var akisLi = document.querySelectorAll("#akis li"), sonAdim = 0;
+  function adim(n) {
+    if (n === sonAdim) return; sonAdim = n;
+    akisLi.forEach(function (li, i) { li.classList.toggle("gecti", i + 1 < n); li.classList.toggle("simdi", i + 1 === n); });
+  }
+  function belge() { try { return uyg.contentDocument; } catch (_) { return null; } }
+  function uygDurum() {
+    var d = belge(); if (!d || !d.getElementById("izin-perde")) return 0;
+    if (d.getElementById("t-cubuk")) return 3;
+    if (!d.getElementById("izin-perde").hidden || !d.getElementById("yetki-perde").hidden) return 2;
+    var acik = d.querySelector('.gez[data-sayfa="Hardware"]');
+    if (acik && !acik.disabled) return 4;
+    return 1;
+  }
+  setInterval(function () { var n = uygDurum(); if (n) adim(n); }, 300);
+
+  /* ---- otomatik demo ---- */
+  var durumEl = $("#durum"), durumYazi = $("#durum-yazi"), durumDugme = $("#durum-dugme");
+  var demo = { calisiyor: false, iptal: false, zaman: [] };
+  var METIN = {
+    hazir: ["Canlı arayüz · örnek veri", "Demoyu oynat", "i-oynat"],
+    oynuyor: ["Otomatik demo oynuyor · dilediğiniz an kontrolü alın", "", ""],
+    sizde: ["Kontrol sizde · örnek veriyle gezinin", "Demoyu baştan oynat", "i-yenile"],
+    bitti: ["Demo tamamlandı · sayfaları gezmeye devam edin", "Baştan oynat", "i-yenile"]
+  };
+  function durumYaz(d) {
+    var m = METIN[d]; durumEl.dataset.d = d; durumYazi.textContent = m[0];
+    durumDugme.hidden = !m[1];
+    if (m[1]) durumDugme.innerHTML = '<svg class="i"><use href="#' + m[2] + '"/></svg>' + m[1];
+  }
+  function bekle(ms) {
+    return new Promise(function (ok, red) {
+      var t = setTimeout(function () { demo.iptal ? red("iptal") : ok(); }, ms);
+      demo.zaman.push(t);
+    });
+  }
+  function hazirOl() {
+    return new Promise(function (ok, red) {
+      var dene = function () {
+        if (demo.iptal) return red("iptal");
+        var d = belge();
+        if (d && d.querySelector("#sayfa .kart") && d.getElementById("tara-dugme")) ok(d);
+        else demo.zaman.push(setTimeout(dene, 150));
+      };
+      dene();
+    });
+  }
+  function imlecGit(el) {
+    var r = el.getBoundingClientRect();
+    var x = (r.left + r.width / 2) * olcek, y = (r.top + r.height / 2) * olcek;
+    imlec.classList.add("gor");
+    imlec.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+  }
+  async function tikla(el) {
+    if (!el) return;
+    imlecGit(el); await bekle(800);
+    imlec.classList.remove("bas"); void imlec.offsetWidth; imlec.classList.add("bas");
+    await bekle(140);
+    if (demo.iptal) return;
+    el.click();
+  }
+  var baslatildi = false;
+  async function oynat() {
+    if (demo.calisiyor) return;
+    baslatildi = true;
+    demo.iptal = false; demo.calisiyor = true; demo.zaman = [];
+    durumYaz("oynuyor");
+    try {
+      var d = await hazirOl();
+      await bekle(1400);
+      await tikla(d.getElementById("tara-dugme"));
+      await bekle(1500);
+      var liste = d.querySelector("#izin-perde .kaydir");
+      if (liste) liste.scrollTo({ top: 160, behavior: "smooth" });
+      await bekle(1300);
+      if (liste) liste.scrollTo({ top: 0, behavior: "smooth" });
+      await tikla(d.getElementById("yetkilendir"));
+      await bekle(1000);
+      if (!d.getElementById("yetki-perde").hidden) { await bekle(900); await tikla(d.getElementById("yetki-yukselt")); }
+      await bekle(600);
+      imlec.classList.remove("gor");
+      for (var i = 0; i < 160 && uygDurum() !== 4; i++) await bekle(150);
+      await bekle(600);
+      imlec.classList.remove("gor");
+      demo.calisiyor = false; durumYaz("bitti");
+    } catch (_) { /* ziyaretçi devraldı */ }
+  }
+  function devral() {
+    if (!demo.calisiyor) return;
+    demo.iptal = true; demo.calisiyor = false;
+    demo.zaman.forEach(clearTimeout); demo.zaman = [];
+    imlec.classList.remove("gor");
+    durumYaz("sizde");
+  }
+  function dinle() {
+    var d = belge(); if (!d) return;
+    ["pointerdown", "keydown", "wheel", "touchstart"].forEach(function (t) { d.addEventListener(t, devral, { passive: true, capture: true }); });
+  }
+  uyg.addEventListener("load", dinle);
+  if (belge() && belge().readyState === "complete") dinle();
+
+  function bastan() {
+    devral(); sonAdim = 0;
+    demo.iptal = false;
+    var bir = function () { uyg.removeEventListener("load", bir); oynat(); };
+    uyg.addEventListener("load", bir);
+    try { uyg.contentWindow.location.reload(); } catch (_) { uyg.src = uyg.src; }
+  }
+  durumDugme.addEventListener("click", function () {
+    if (durumEl.dataset.d === "hazir") oynat(); else bastan();
+  });
+
+  durumYaz("hazir");
+  if (!az && "IntersectionObserver" in window) {
+    var po = new IntersectionObserver(function (g) {
+      if (g[0].isIntersecting && !baslatildi) { baslatildi = true; po.disconnect(); oynat(); }
+    }, { threshold: 0.12 });
+    po.observe(ekran);
+  }
+
+  /* ---- tur düğmeleri ---- */
+  function gonder(m) { try { uyg.contentWindow.postMessage(Object.assign({ pcAuditTanitim: 1 }, m), location.origin); } catch (_) {} }
+  document.querySelectorAll(".tur button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (demo.calisiyor) devral();
+      else if (durumEl.dataset.d === "hazir") durumYaz("sizde");
+      var d = belge();
+      if (d) ["izin-perde", "yetki-perde", "onay-perde"].forEach(function (id) { var p = d.getElementById(id); if (p && b.dataset.sayfa) p.hidden = true; });
+      if (b.dataset.tara) gonder({ sayfa: "Dashboard", tara: 1 });
+      else gonder({ sayfa: b.dataset.sayfa });
+      var r = ekran.getBoundingClientRect();
+      if (r.top < 60 || r.bottom > innerHeight) ekran.scrollIntoView({ behavior: az ? "auto" : "smooth", block: "center" });
+    });
+  });
+
+  /* ---- rapor bölümleri ---- */
+  var rc = $("#rapor-cerceve");
+  document.querySelectorAll("[data-bolum]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("[data-bolum]").forEach(function (x) { x.classList.toggle("sec", x === b); });
+      try {
+        var w = rc.contentWindow, hedef = w.document.getElementById(b.dataset.bolum);
+        if (hedef) w.scrollTo({ top: hedef.getBoundingClientRect().top + w.scrollY - 12, behavior: az ? "auto" : "smooth" });
+      } catch (_) {}
+    });
+  });
+
+  /* ---- büyük görüntü ---- */
+  var dlg = $("#buyuk");
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-buyuk]");
+    if (!b) return;
+    var img = dlg.querySelector("img");
+    img.src = b.dataset.buyuk; img.alt = b.querySelector("img").alt;
+    dlg.querySelector("p").textContent = b.dataset.ad || "";
+    dlg.showModal();
+  });
+  dlg.addEventListener("click", function (e) { if (e.target === dlg || e.target.closest(".kapat")) dlg.close(); });
+})();
+</script>
+</body>
+</html>

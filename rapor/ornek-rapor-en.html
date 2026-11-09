@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../ikon.svg">
+<script src="/_ortak/serit.js" defer></script>
+<title>System Audit Report — DEMO-OFIS-01</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f0f2f5; --text:#12161c; --muted:#5b6672;
+  --line:#dde2e8; --primary:#1b62d6; --ok:#15803d; --warn:#b45309; --bad:#b91c1c;
+  --ok-bg:#e8f6ec; --warn-bg:#fdf3e3; --bad-bg:#fdeaea;
+  --radius:10px; --shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1319; --surface:#161b23; --surface-2:#1d232c; --text:#e7ebf0; --muted:#98a3b1;
+    --line:#2a323d; --primary:#6ea8fe; --ok:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --ok-bg:#13301f; --warn-bg:#33270c; --bad-bg:#3a1414;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:0 24px 64px;background:var(--bg);color:var(--text);
+  font:14px/1.55 "Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;}
+.page-header{max-width:1180px;margin:0 auto;padding:28px 0 20px;display:flex;flex-wrap:wrap;
+  gap:24px;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:14px;align-items:center}
+.brand-mark{width:44px;height:44px;border-radius:12px;background:var(--primary);color:#fff;
+  display:grid;place-items:center;font-weight:700;letter-spacing:.5px}
+h1{font-size:22px;margin:0;font-weight:650}
+.subtitle{margin:2px 0 0;color:var(--muted);font-size:13px}
+.header-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 22px;margin:0}
+.header-facts dt{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.header-facts dd{margin:2px 0 0;font-weight:600}
+.section{max-width:1180px;margin:26px auto;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px}
+.section h2{margin:0 0 14px;font-size:17px;font-weight:650;
+  padding-bottom:10px;border-bottom:1px solid var(--line)}
+/* No text-transform on headings or table headers: the document carries the
+   reader's language, and browsers apply that language's casing rules, which
+   turns English labels such as "Finding" into "FİNDİNG" under Turkish locale. */
+.section h3{margin:22px 0 8px;font-size:14px;font-weight:650;color:var(--muted);
+  letter-spacing:.04em}
+.contents{max-width:1180px;margin:20px auto}
+.contents h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 8px}
+.contents ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0}
+.contents a{display:inline-block;padding:5px 12px;background:var(--surface);border:1px solid var(--line);
+  border-radius:99px;color:var(--text);text-decoration:none;font-size:13px}
+.contents a:hover{border-color:var(--primary);color:var(--primary)}
+.summary-grid{display:grid;grid-template-columns:minmax(240px,300px) 1fr;gap:20px;align-items:start}
+@media (max-width:760px){.summary-grid{grid-template-columns:1fr}}
+.score-card{display:flex;gap:16px;align-items:center;padding:16px;border-radius:var(--radius);
+  background:var(--surface-2);border:1px solid var(--line)}
+.score-dial{width:104px;height:104px;flex:none}
+.dial-track{fill:none;stroke:var(--line);stroke-width:10}
+.dial-value{fill:none;stroke-width:10;stroke-linecap:round}
+.tone-ok .dial-value{stroke:var(--ok)} .tone-warn .dial-value{stroke:var(--warn)}
+.tone-bad .dial-value{stroke:var(--bad)}
+.dial-text{fill:var(--text);font-size:30px;font-weight:700;text-anchor:middle}
+.score-meta h3{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.score-rating{margin:2px 0 6px;font-size:18px;font-weight:650}
+.score-note{margin:0;font-size:12px;color:var(--muted)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat{padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-2)}
+.stat-value{display:block;font-size:20px;font-weight:650}
+.stat-label{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.stat.tone-ok .stat-value{color:var(--ok)} .stat.tone-warn .stat-value{color:var(--warn)}
+.stat.tone-bad .stat-value{color:var(--bad)}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-bottom:6px}
+.badge{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 13px;
+  border-radius:var(--radius);border:1px solid var(--line);background:var(--surface-2)}
+.badge-label{font-size:13px}
+.badge-value{font-weight:650;font-size:13px;white-space:nowrap}
+.badge.tone-ok{background:var(--ok-bg)} .badge.tone-ok .badge-value{color:var(--ok)}
+.badge.tone-bad{background:var(--bad-bg)} .badge.tone-bad .badge-value{color:var(--bad)}
+.badge.tone-muted .badge-value{color:var(--muted)}
+.table-wrap{overflow-x:auto;margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+table.facts{max-width:760px}
+table.facts th{text-align:left;font-weight:500;color:var(--muted);width:230px;
+  padding:6px 12px 6px 0;vertical-align:top}
+table.facts td{padding:6px 0;font-weight:550;word-break:break-word}
+table.data th{text-align:left;background:var(--surface-2);color:var(--muted);font-weight:600;
+  font-size:12px;letter-spacing:.03em;padding:8px 10px;
+  border-bottom:1px solid var(--line);position:sticky;top:0}
+table.data td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;
+  word-break:break-word;max-width:420px}
+table.data tbody tr:hover{background:var(--surface-2)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)} .muted{color:var(--muted)}
+.bar-list{display:grid;gap:8px;margin-bottom:14px}
+.bar-row{display:grid;grid-template-columns:170px 1fr auto;gap:12px;align-items:center;font-size:13px}
+@media (max-width:640px){.bar-row{grid-template-columns:1fr}}
+.bar-label{font-weight:600}
+.bar{background:var(--surface-2);border:1px solid var(--line);border-radius:99px;height:12px;overflow:hidden}
+.bar-fill{display:block;height:100%;border-radius:99px}
+.bar-fill.tone-ok{background:var(--ok)} .bar-fill.tone-warn{background:var(--warn)}
+.bar-fill.tone-bad{background:var(--bad)}
+.bar-value{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.note{font-size:12px;color:var(--muted);margin:8px 0 0}
+.notice{max-width:1180px;margin:16px auto;padding:12px 16px;border-radius:var(--radius);font-size:13px}
+.notice-warn{background:var(--warn-bg);border:1px solid var(--warn);color:var(--warn)}
+.page-footer{max-width:1180px;margin:32px auto 0;padding-top:18px;border-top:1px solid var(--line);
+  font-size:12px;color:var(--muted)}
+.page-footer h3{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+@media print{
+  body{background:#fff;padding:0}
+  .section{break-inside:avoid;box-shadow:none;border-color:#ccc}
+  .contents{display:none}
+  table.data th{position:static}
+}
+</style>
+</head>
+<body>
+<header class="page-header">
+<div class="brand">
+<div class="brand-mark">PS</div>
+<div>
+<h1>System Audit Report</h1>
+<p class="subtitle">Authorized Windows System Inspection</p>
+</div>
+</div>
+<dl class="header-facts"><div><dt>Computer Name</dt><dd>DEMO-OFIS-01</dd></div><div><dt>Current User</dt><dd>DEMO-OFIS-01\demo.kullanici</dd></div><div><dt>Generated</dt><dd>2026-11-06 10:14</dd></div><div><dt>Duration</dt><dd>41,6s</dd></div><div><dt>Administrator Status</dt><dd>Administrator scan</dd></div></dl>
+</header>
+<section id="summary" class="section">
+<h2>Executive Summary</h2>
+<div class="summary-grid">
+<div class="score-card tone-warn">
+<svg viewBox="0 0 120 120" class="score-dial" role="img" aria-label="Health Score"><circle cx="60" cy="60" r="52" class="dial-track"/><circle cx="60" cy="60" r="52" class="dial-value" stroke-dasharray="196.02 130.68" transform="rotate(-90 60 60)"/><text x="60" y="66" class="dial-text">60</text></svg>
+<div class="score-meta"><h3>Health Score</h3><p class="score-rating">Fair</p><p class="score-note">This score summarises configuration hygiene only. It is not an antivirus verdict, a vulnerability assessment or a compliance audit.</p></div>
+</div>
+<div class="stat-grid"><div class="stat"><span class="stat-value">7,762</span><span class="stat-label">Items discovered</span></div><div class="stat tone-warn"><span class="stat-value">2</span><span class="stat-label">Warnings</span></div><div class="stat tone-ok"><span class="stat-value">0</span><span class="stat-label">Errors</span></div><div class="stat"><span class="stat-value">2/3</span><span class="stat-label">Security</span></div><div class="stat"><span class="stat-value">228.3 GB free</span><span class="stat-label">Storage</span></div><div class="stat"><span class="stat-value">34</span><span class="stat-label">Software</span></div></div>
+</div>
+<h3>Score breakdown</h3>
+<table class="data"><thead><tr><th>Area</th><th>Finding</th><th class="num">Points</th></tr></thead><tbody><tr><td>Storage</td><td>Volume D:\ has only 4,7% free space.</td><td class="num bad">-12</td></tr><tr><td>Security</td><td>Windows Firewall is disabled for 1 profile(s).</td><td class="num bad">-9</td></tr><tr><td>Updates</td><td>Windows is waiting for a restart to finish installing updates.</td><td class="num bad">-8</td></tr><tr><td>Security</td><td>The system volume is not encrypted.</td><td class="num bad">-6</td></tr><tr><td>Stability</td><td>101 error events were recorded in the selected window.</td><td class="num bad">-5</td></tr><tr><td>Security</td><td>Real-time malware protection is active.</td><td class="num ok">0</td></tr><tr><td>Security</td><td>Malware signatures are current.</td><td class="num ok">0</td></tr><tr><td>Security</td><td>User Account Control is enabled.</td><td class="num ok">0</td></tr><tr><td>Security</td><td>Secure Boot is enabled.</td><td class="num ok">0</td></tr><tr><td>Updates</td><td>Windows was updated 9 day(s) ago.</td><td class="num ok">0</td></tr><tr><td>Storage</td><td>Volume C:\ has 38,8% free space.</td><td class="num ok">0</td></tr><tr><td>Stability</td><td>2 critical event(s) in the selected window.</td><td class="num ok">0</td></tr><tr><td>Performance</td><td>8 auto-start entr(ies) configured.</td><td class="num ok">0</td></tr><tr><td>Performance</td><td>Memory utilisation was 61% during the scan.</td><td class="num ok">0</td></tr></tbody></table>
+</section>
+<nav class="contents"><h2>Contents</h2><ul><li><a href="#system">Operating System</a></li><li><a href="#hardware">Hardware</a></li><li><a href="#storage">Storage</a></li><li><a href="#software">Software</a></li><li><a href="#network">Network</a></li><li><a href="#security">Security</a></li><li><a href="#users">Users</a></li><li><a href="#processes">Processes</a></li><li><a href="#services">Services</a></li><li><a href="#startup">Startup</a></li><li><a href="#tasks">Scheduled Tasks</a></li><li><a href="#events">Event Logs</a></li><li><a href="#files">File Inventory</a></li><li><a href="#performance">Performance</a></li><li><a href="#collection">Collection Status</a></li></ul></nav>
+<section id="system" class="section">
+<h2>Operating System</h2>
+<table class="facts"><tbody><tr><th>Edition</th><td>Windows 11 Pro</td></tr><tr><th>Product</th><td>Windows 11</td></tr><tr><th>Version</th><td>24H2</td></tr><tr><th>Build</th><td>26100.4349</td></tr><tr><th>Architecture</th><td>64-bit</td></tr><tr><th>Install date</th><td>2025-03-04 09:00</td></tr><tr><th>Computer name</th><td>DEMO-OFIS-01</td></tr><tr><th>Domain / workgroup</th><td>WORKGROUP</td></tr><tr><th>Domain joined</th><td>No</td></tr><tr><th>Last boot</th><td>2026-10-31 08:32</td></tr><tr><th>Uptime</th><td>6d 1h 42m</td></tr><tr><th>System language</th><td>tr-TR</td></tr><tr><th>Locale</th><td>tr-TR</td></tr><tr><th>Time zone</th><td>(UTC+03:00) İstanbul</td></tr><tr><th>System drive</th><td>C:</td></tr><tr><th>Windows directory</th><td>C:\Windows</td></tr><tr><th>Virtual machine</th><td>No</td></tr><tr><th>.NET runtime</th><td>8.0.31</td></tr></tbody></table>
+</section>
+<section id="hardware" class="section">
+<h2>Hardware</h2>
+<h3>Intel(R) Core(TM) i7-12700 CPU @ 2.10GHz</h3><table class="facts"><tbody><tr><th>Manufacturer</th><td>GenuineIntel</td></tr><tr><th>Cores</th><td>12</td></tr><tr><th>Logical processors</th><td>20</td></tr><tr><th>Max clock</th><td>2100 MHz</td></tr><tr><th>Load during scan</th><td>14%</td></tr><tr><th>Architecture</th><td>x64</td></tr><tr><th>L2 cache</th><td>12 MB</td></tr><tr><th>L3 cache</th><td>25 MB</td></tr><tr><th>Virtualization</th><td>Yes</td></tr></tbody></table>
+<h3>Memory</h3><table class="facts"><tbody><tr><th>Total</th><td>32 GB</td></tr><tr><th>Available</th><td>12.5 GB</td></tr><tr><th>In use</th><td>19.5 GB</td></tr><tr><th>Utilisation</th><td>61%</td></tr></tbody></table>
+<div class="table-wrap"><table class="data"><thead><tr><th>Slot</th><th>Capacity</th><th>Speed</th><th>Type</th><th>Manufacturer</th><th>Part number</th></tr></thead><tbody><tr><td>DIMM 1</td><td>16 GB</td><td>3200 MT/s</td><td>DDR4</td><td>Kingston</td><td>KF432C16BB/16</td></tr><tr><td>DIMM 2</td><td>16 GB</td><td>3200 MT/s</td><td>DDR4</td><td>Kingston</td><td>KF432C16BB/16</td></tr></tbody></table></div>
+<h3>Graphics</h3><div class="table-wrap"><table class="data"><thead><tr><th>Adapter</th><th>Manufacturer</th><th>Driver</th><th>Driver date</th><th>Video memory</th><th>Mode</th></tr></thead><tbody><tr><td>NVIDIA GeForce RTX 3060</td><td>NVIDIA</td><td>32.0.15.6094</td><td>2026-05-30 09:00</td><td>12 GB</td><td>1920 x 1080 x 4294967296 renk</td></tr><tr><td>Intel(R) UHD Graphics 770</td><td>Intel Corporation</td><td>31.0.101.5186</td><td>2026-01-10 09:00</td><td>2 GB</td><td>—</td></tr></tbody></table></div>
+<h3>Motherboard and firmware</h3><table class="facts"><tbody><tr><th>System manufacturer</th><td>ASUS</td></tr><tr><th>System model</th><td>System Product Name</td></tr><tr><th>System serial</th><td>DEMO-SN-0001</td></tr><tr><th>Board manufacturer</th><td>ASUSTeK COMPUTER INC.</td></tr><tr><th>Board product</th><td>PRIME B660M-A D4</td></tr><tr><th>Board serial</th><td>DEMO-0000-0000</td></tr><tr><th>Chassis</th><td>Desktop</td></tr><tr><th>BIOS version</th><td>3010</td></tr><tr><th>BIOS manufacturer</th><td>American Megatrends Inc.</td></tr><tr><th>BIOS date</th><td>2025-09-12 09:00</td></tr><tr><th>Firmware type</th><td>UEFI</td></tr><tr><th>Secure Boot</th><td>Yes</td></tr></tbody></table>
+<h3>Displays</h3><div class="table-wrap"><table class="data"><thead><tr><th>Manufacturer</th><th>Model</th><th>Resolution</th><th>Refresh</th><th>Year</th></tr></thead><tbody><tr><td>DEL</td><td>DELL P2422H</td><td>1920 × 1080</td><td>60 Hz</td><td>2023</td></tr><tr><td>DEL</td><td>DELL P2422H</td><td>1920 × 1080</td><td>60 Hz</td><td>2023</td></tr></tbody></table></div>
+<h3>Audio</h3><div class="table-wrap"><table class="data"><thead><tr><th>Device</th><th>Manufacturer</th><th>Status</th></tr></thead><tbody><tr><td>Realtek High Definition Audio</td><td>Realtek</td><td>OK</td></tr><tr><td>NVIDIA High Definition Audio</td><td>NVIDIA</td><td>OK</td></tr></tbody></table></div>
+<h3>USB devices</h3><div class="table-wrap"><table class="data"><thead><tr><th>Device</th><th>Manufacturer</th><th>Class</th><th>Status</th></tr></thead><tbody><tr><td>USB Giriş Aygıtı (Logitech MX Keys)</td><td>Logitech</td><td>HID</td><td>OK</td></tr><tr><td>USB Giriş Aygıtı (Logitech MX Master 3S)</td><td>Logitech</td><td>HID</td><td>OK</td></tr><tr><td>USB Yığın Depolama Aygıtı</td><td>SanDisk</td><td>Depolama</td><td>OK</td></tr><tr><td>Logitech C920 HD Pro Webcam</td><td>Logitech</td><td>Kamera</td><td>OK</td></tr></tbody></table></div>
+</section>
+<section id="storage" class="section">
+<h2>Storage</h2>
+<div class="bar-list"><div class="bar-row"><span class="bar-label">C:\ (Windows)</span><span class="bar"><span class="bar-fill tone-ok" style="width:61.2%"></span></span><span class="bar-value">291.2 GB / 476 GB (61.2%)</span></div><div class="bar-row"><span class="bar-label">D:\ (Ortak)</span><span class="bar"><span class="bar-fill tone-bad" style="width:95.3%"></span></span><span class="bar-value">888 GB / 931.5 GB (95.3%)</span></div><div class="bar-row"><span class="bar-label">E:\ (USB)</span><span class="bar"><span class="bar-fill tone-ok" style="width:34.8%"></span></span><span class="bar-value">20 GB / 57.3 GB (34.8%)</span></div></div><div class="table-wrap"><table class="data"><thead><tr><th>Drive</th><th>Label</th><th>File system</th><th>Type</th><th>Total</th><th>Used</th><th>Free</th><th>Used %</th><th>BitLocker</th></tr></thead><tbody><tr><td>C:\</td><td>Windows</td><td>NTFS</td><td>Fixed</td><td>476 GB</td><td>291.2 GB</td><td>184.8 GB</td><td>61.2%</td><td>Off</td></tr><tr><td>D:\</td><td>Ortak</td><td>NTFS</td><td>Fixed</td><td>931.5 GB</td><td>888 GB</td><td>43.5 GB</td><td>95.3%</td><td>Off</td></tr><tr><td>E:\</td><td>USB</td><td>exFAT</td><td>Removable</td><td>57.3 GB</td><td>20 GB</td><td>37.3 GB</td><td>34.8%</td><td>—</td></tr></tbody></table></div>
+<h3>Physical disks</h3><div class="table-wrap"><table class="data"><thead><tr><th>Model</th><th>Media</th><th>Bus</th><th>Interface</th><th>Size</th><th>Partitions</th><th>Health</th><th>Volumes</th></tr></thead><tbody><tr><td>Samsung SSD 980 PRO 500GB</td><td>SSD</td><td>NVMe</td><td>SCSI</td><td>465.8 GB</td><td>4</td><td>Healthy</td><td>C:</td></tr><tr><td>WDC WD10EZEX-08WN4A0</td><td>HDD</td><td>SATA</td><td>IDE</td><td>931.5 GB</td><td>1</td><td>Healthy</td><td>D:</td></tr><tr><td>SanDisk Ultra USB 3.0</td><td>Unspecified</td><td>USB</td><td>—</td><td>57.3 GB</td><td>1</td><td>Healthy</td><td>E:</td></tr></tbody></table></div>
+</section>
+<section id="software" class="section">
+<h2>Software</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Application</th><th>Version</th><th>Publisher</th><th>Installed</th><th>Architecture</th><th>Source</th></tr></thead><tbody><tr><td>Google Chrome</td><td>130.0.6723.92</td><td>Google LLC</td><td>2026-10-31 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Microsoft 365 Apps for business - tr-tr</td><td>16.0.18129.20158</td><td>Microsoft Corporation</td><td>2026-10-16 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Microsoft Teams</td><td>24277.3502.3161.3007</td><td>Microsoft Corporation</td><td>2026-10-22 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Zoom Workplace</td><td>6.2.6</td><td>Zoom Video Communications, Inc.</td><td>2026-09-23 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Adobe Acrobat Reader (64-bit)</td><td>24.004.20220</td><td>Adobe</td><td>2026-10-04 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>7-Zip 24.08 (x64)</td><td>24.08</td><td>Igor Pavlov</td><td>2026-07-31 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>VLC media player</td><td>3.0.21</td><td>VideoLAN</td><td>2026-06-19 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Notepad++ (64-bit x64)</td><td>8.7</td><td>Notepad++ Team</td><td>2026-09-17 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Microsoft Visual Studio Code</td><td>1.95.1</td><td>Microsoft Corporation</td><td>2026-11-02 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Git</td><td>2.47.0</td><td>The Git Development Community</td><td>2026-10-11 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Java 8 Update 251</td><td>8.0.2510.8</td><td>Oracle Corporation</td><td>2022-06-10 09:00</td><td>x86</td><td>MachineWow64</td></tr><tr><td>AnyDesk</td><td>8.1.0</td><td>AnyDesk Software GmbH</td><td>2026-07-09 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>WinRAR 6.02 (64-bit)</td><td>6.02.0</td><td>win.rar GmbH</td><td>2023-04-16 09:00</td><td>x86</td><td>MachineNative</td></tr><tr><td>Logi Options+</td><td>1.83.1</td><td>Logitech</td><td>2026-09-07 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>NVIDIA Graphics Driver 560.94</td><td>560.94</td><td>NVIDIA Corporation</td><td>2026-05-30 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Realtek Audio Driver</td><td>6.0.9549.1</td><td>Realtek Semiconductor Corp.</td><td>2025-09-22 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Microsoft Edge</td><td>130.0.2849.68</td><td>Microsoft Corporation</td><td>2026-11-01 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Microsoft OneDrive</td><td>24.201.1006.0005</td><td>Microsoft Corporation</td><td>2026-10-29 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Logo Tiger 3 Enterprise</td><td>2.88.00.00</td><td>Logo Yazılım</td><td>2026-04-10 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>e-Fatura Görüntüleyici</td><td>3.4.1</td><td>Demo Yazılım</td><td>2025-10-22 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>PDF24 Creator</td><td>11.20.0</td><td>geek software GmbH</td><td>2026-08-08 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Python 3.12.7 (64-bit)</td><td>3.12.7150.0</td><td>Python Software Foundation</td><td>2026-08-23 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Microsoft Visual C++ 2015-2022 Redistributable (x64)</td><td>14.40.33816.0</td><td>Microsoft Corporation</td><td>2026-07-09 09:00</td><td>x64</td><td>MachineNative</td></tr><tr><td>Spotify</td><td>1.2.48.405</td><td>Spotify AB</td><td>2026-10-25 09:00</td><td>x64</td><td>MachineNative</td></tr></tbody></table></div>
+<h3>Runtimes and frameworks</h3><div class="table-wrap"><table class="data"><thead><tr><th>Component</th><th>Version</th><th>Kind</th></tr></thead><tbody><tr><td>Microsoft.NETCore.App</td><td>8.0.31</td><td>.NET</td></tr><tr><td>Microsoft.WindowsDesktop.App</td><td>8.0.31</td><td>.NET</td></tr><tr><td>Microsoft.AspNetCore.App</td><td>8.0.31</td><td>.NET</td></tr><tr><td>.NET Framework</td><td>4.8.1</td><td>.NET Framework</td></tr></tbody></table></div>
+<h3>Store packages</h3><div class="table-wrap"><table class="data"><thead><tr><th>Package</th><th>Version</th><th>Architecture</th><th>Publisher</th></tr></thead><tbody><tr><td>Microsoft.WindowsCalculator</td><td>11.2409.0.0</td><td>x64</td><td>CN=Microsoft Corporation</td></tr><tr><td>Microsoft.WindowsNotepad</td><td>11.2409.9.0</td><td>x64</td><td>CN=Microsoft Corporation</td></tr><tr><td>Microsoft.Paint</td><td>11.2410.28.0</td><td>x64</td><td>CN=Microsoft Corporation</td></tr><tr><td>Microsoft.WindowsTerminal</td><td>1.21.2911.0</td><td>x64</td><td>CN=Microsoft Corporation</td></tr><tr><td>Microsoft.ScreenSketch</td><td>11.2409.25.0</td><td>x64</td><td>CN=Microsoft Corporation</td></tr><tr><td>WhatsApp</td><td>2.2443.6.0</td><td>x64</td><td>CN=Microsoft Corporation</td></tr></tbody></table></div>
+</section>
+<section id="network" class="section">
+<h2>Network</h2>
+<table class="facts"><tbody><tr><th>Host name</th><td>DEMO-OFIS-01</td></tr><tr><th>DNS domain</th><td>—</td></tr><tr><th>Network available</th><td>Yes</td></tr><tr><th>Active adapters</th><td>1</td></tr><tr><th>Proxy enabled</th><td>No</td></tr><tr><th>Proxy server</th><td>—</td></tr><tr><th>Proxy auto-config</th><td>—</td></tr></tbody></table>
+<div class="table-wrap"><table class="data"><thead><tr><th>Adapter</th><th>Type</th><th>Status</th><th>MAC</th><th>IPv4</th><th>Gateway</th><th>DNS</th><th>DHCP</th><th>Speed</th></tr></thead><tbody><tr><td>Ethernet</td><td>Ethernet</td><td>Up</td><td>00-11-22-33-44-55</td><td>192.168.1.42</td><td>192.168.1.1</td><td>192.168.1.1, 1.1.1.1</td><td>Yes</td><td>119.2 MB/s</td></tr><tr><td>Wi-Fi</td><td>Wireless80211</td><td>Disconnected</td><td>00-11-22-33-44-66</td><td>—</td><td>—</td><td>—</td><td>Yes</td><td>—</td></tr><tr><td>vEthernet (Default Switch)</td><td>Ethernet</td><td>Up</td><td>00-15-5D-00-00-01</td><td>172.20.112.1</td><td>—</td><td>—</td><td>No</td><td>1.16 GB/s</td></tr></tbody></table></div>
+<p class="note">Wi-Fi keys, VPN credentials and stored authentication secrets are deliberately excluded from this inventory.</p></section>
+<section id="security" class="section">
+<h2>Security</h2>
+<div class="badge-grid"><div class="badge tone-ok"><span class="badge-label">Defender real-time</span><span class="badge-value">✓ Enabled</span></div><div class="badge tone-bad"><span class="badge-label">Firewall</span><span class="badge-value">✕ Disabled</span></div><div class="badge tone-bad"><span class="badge-label">BitLocker (system volume)</span><span class="badge-value">✕ Disabled</span></div><div class="badge tone-ok"><span class="badge-label">UAC</span><span class="badge-value">✓ Enabled</span></div><div class="badge tone-ok"><span class="badge-label">Secure Boot</span><span class="badge-value">✓ Enabled</span></div><div class="badge tone-ok"><span class="badge-label">Tamper protection</span><span class="badge-value">✓ Enabled</span></div></div><h3>Microsoft Defender</h3><table class="facts"><tbody><tr><th>Installed</th><td>Enabled</td></tr><tr><th>Antimalware service</th><td>Enabled</td></tr><tr><th>Real-time protection</th><td>Enabled</td></tr><tr><th>Tamper protection</th><td>Enabled</td></tr><tr><th>Signature version</th><td>1.421.512.0</td></tr><tr><th>Signature age</th><td>1 day(s)</td></tr><tr><th>Last signature update</th><td>2026-11-05 07:40</td></tr><tr><th>Engine version</th><td>1.1.24090.11</td></tr><tr><th>Last quick scan</th><td>2026-11-05 12:05</td></tr><tr><th>Last full scan</th><td>2026-09-29 13:00</td></tr></tbody></table>
+<h3>Windows Firewall</h3><div class="table-wrap"><table class="data"><thead><tr><th>Profile</th><th>Enabled</th><th>Inbound default</th><th>Outbound default</th></tr></thead><tbody><tr><td>Domain</td><td>Enabled</td><td>Block</td><td>Allow</td></tr><tr><td>Private</td><td>Enabled</td><td>Block</td><td>Allow</td></tr><tr><td>Public</td><td>Disabled</td><td>Allow</td><td>Allow</td></tr></tbody></table></div>
+<h3>Drive encryption</h3><div class="table-wrap"><table class="data"><thead><tr><th>Volume</th><th>Protection</th><th>Conversion</th><th>Method</th><th>Encrypted %</th></tr></thead><tbody><tr><td>C:</td><td>Off</td><td>FullyDecrypted</td><td>None</td><td>0</td></tr><tr><td>D:</td><td>Off</td><td>FullyDecrypted</td><td>None</td><td>0</td></tr></tbody></table></div>
+<h3>User Account Control</h3><table class="facts"><tbody><tr><th>Enabled</th><td>Enabled</td></tr><tr><th>Administrator prompt</th><td>Consent for non-Windows binaries</td></tr><tr><th>Secure desktop</th><td>Yes</td></tr></tbody></table>
+<h3>Windows Update</h3><table class="facts"><tbody><tr><th>Last successful install</th><td>2026-10-28 03:12</td></tr><tr><th>Last detection</th><td>2026-11-06 08:50</td></tr><tr><th>Days since last update</th><td>9</td></tr><tr><th>Restart pending</th><td>Yes</td></tr><tr><th>Installed packages</th><td>4</td></tr></tbody></table>
+<div class="table-wrap"><table class="data"><thead><tr><th>Update</th><th>Description</th><th>Installed</th></tr></thead><tbody><tr><td>KB5066835</td><td>Security Update</td><td>2026-10-28 09:00</td></tr><tr><td>KB5066131</td><td>Update</td><td>2026-10-28 09:00</td></tr><tr><td>KB5065426</td><td>Security Update</td><td>2026-09-27 09:00</td></tr><tr><td>KB5064401</td><td>Update</td><td>2026-09-15 09:00</td></tr></tbody></table></div>
+<h3>Registered security products</h3><div class="table-wrap"><table class="data"><thead><tr><th>Product</th><th>Type</th><th>Enabled</th><th>Definitions current</th></tr></thead><tbody><tr><td>Windows Defender</td><td>Antivirus</td><td>Enabled</td><td>Enabled</td></tr></tbody></table></div>
+</section>
+<section id="users" class="section">
+<h2>Users</h2>
+<table class="facts"><tbody><tr><th>User name</th><td>demo.kullanici</td></tr><tr><th>Qualified name</th><td>DEMO-OFIS-01\demo.kullanici</td></tr><tr><th>SID</th><td>S-1-5-21-1000000000-2000000000-3000000000-1001</td></tr><tr><th>Profile path</th><td>C:\Users\demo.kullanici</td></tr><tr><th>Local account</th><td>Yes</td></tr><tr><th>Elevated</th><td>Yes</td></tr><tr><th>Administrators member</th><td>Yes</td></tr></tbody></table>
+<h3>Local accounts</h3><div class="table-wrap"><table class="data"><thead><tr><th>Account</th><th>Full name</th><th>Disabled</th><th>Locked out</th><th>Password never expires</th><th>SID</th></tr></thead><tbody><tr><td>demo.kullanici</td><td>Demo Kullanıcı</td><td>No</td><td>No</td><td>No</td><td>S-1-5-21-…-1001</td></tr><tr><td>destek</td><td>BT Destek</td><td>No</td><td>No</td><td>Yes</td><td>S-1-5-21-…-1002</td></tr><tr><td>Administrator</td><td>—</td><td>Yes</td><td>—</td><td>Yes</td><td>S-1-5-21-…-500</td></tr><tr><td>Guest</td><td>—</td><td>Yes</td><td>—</td><td>—</td><td>S-1-5-21-…-501</td></tr></tbody></table></div>
+<h3>Administrators group</h3><p>Administrator, demo.kullanici, destek</p><p class="note">No password, hash, token or credential material is collected or stored by this application.</p></section>
+<section id="processes" class="section">
+<h2>Processes</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Process</th><th>PID</th><th>Parent</th><th>Memory</th><th>CPU time</th><th>Started</th><th>Signed by</th><th>Access</th></tr></thead><tbody><tr><td>System</td><td>4</td><td>0</td><td>0 B</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows</td><td>Full</td></tr><tr><td>explorer</td><td>6120</td><td>1072</td><td>182 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows</td><td>Full</td></tr><tr><td>chrome</td><td>9112</td><td>1072</td><td>412 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Google LLC</td><td>Full</td></tr><tr><td>chrome</td><td>9348</td><td>1072</td><td>266 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Google LLC</td><td>Full</td></tr><tr><td>chrome</td><td>10024</td><td>1072</td><td>198 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Google LLC</td><td>Full</td></tr><tr><td>EXCEL</td><td>11840</td><td>1072</td><td>356 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Corporation</td><td>Full</td></tr><tr><td>OUTLOOK</td><td>7716</td><td>1072</td><td>298 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Corporation</td><td>Full</td></tr><tr><td>ms-teams</td><td>13288</td><td>1072</td><td>341 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Corporation</td><td>Full</td></tr><tr><td>MsMpEng</td><td>4012</td><td>1072</td><td>241 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows Publisher</td><td>Full</td></tr><tr><td>svchost</td><td>1144</td><td>1072</td><td>38 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows Publisher</td><td>Full</td></tr><tr><td>svchost</td><td>1588</td><td>1072</td><td>24 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows Publisher</td><td>Full</td></tr><tr><td>AnyDesk</td><td>5520</td><td>1072</td><td>31 MB</td><td>—</td><td>2026-11-06 08:33</td><td>philandro Software GmbH</td><td>Full</td></tr><tr><td>Code</td><td>14520</td><td>1072</td><td>288 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Corporation</td><td>Full</td></tr><tr><td>OneDrive</td><td>8840</td><td>1072</td><td>96 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Corporation</td><td>Full</td></tr><tr><td>LogiOptionsPlus_agent</td><td>6608</td><td>1072</td><td>74 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Logitech Inc</td><td>Full</td></tr><tr><td>Spotify</td><td>15112</td><td>1072</td><td>210 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Spotify AB</td><td>Full</td></tr><tr><td>dwm</td><td>1340</td><td>1072</td><td>118 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows</td><td>Full</td></tr><tr><td>TigerSrv</td><td>3380</td><td>1072</td><td>140 MB</td><td>—</td><td>2026-11-06 08:33</td><td>—</td><td>Full</td></tr><tr><td>PeraScan</td><td>16200</td><td>1072</td><td>96 MB</td><td>—</td><td>2026-11-06 08:33</td><td>PeraScan Project</td><td>Full</td></tr><tr><td>RuntimeBroker</td><td>7012</td><td>1072</td><td>22 MB</td><td>—</td><td>2026-11-06 08:33</td><td>Microsoft Windows</td><td>Full</td></tr></tbody></table></div>
+</section>
+<section id="services" class="section">
+<h2>Services</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Service</th><th>Display name</th><th>Status</th><th>Start type</th><th>Account</th></tr></thead><tbody><tr><td>WinDefend</td><td>Microsoft Defender Antivirus Service</td><td>Running</td><td>Automatic</td><td>LocalSystem</td></tr><tr><td>mpssvc</td><td>Windows Defender Firewall</td><td>Running</td><td>Automatic</td><td>NT Authority\LocalService</td></tr><tr><td>wuauserv</td><td>Windows Update</td><td>Running</td><td>Manual</td><td>LocalSystem</td></tr><tr><td>Spooler</td><td>Yazdırma Biriktiricisi</td><td>Running</td><td>Automatic</td><td>LocalSystem</td></tr><tr><td>BITS</td><td>Background Intelligent Transfer Service</td><td>Stopped</td><td>Manual</td><td>LocalSystem</td></tr><tr><td>AnyDesk</td><td>AnyDesk Service</td><td>Running</td><td>Automatic</td><td>LocalSystem</td></tr><tr><td>TigerSrv</td><td>Logo Tiger Uygulama Sunucusu</td><td>Running</td><td>Automatic</td><td>.\destek</td></tr><tr><td>RemoteRegistry</td><td>Remote Registry</td><td>Stopped</td><td>Disabled</td><td>NT Authority\LocalService</td></tr><tr><td>TermService</td><td>Remote Desktop Services</td><td>Running</td><td>Manual</td><td>NT Authority\NetworkService</td></tr><tr><td>Dnscache</td><td>DNS Client</td><td>Running</td><td>Automatic</td><td>NT Authority\NetworkService</td></tr><tr><td>NVDisplay.ContainerLocalSystem</td><td>NVIDIA Display Container LS</td><td>Running</td><td>Automatic</td><td>LocalSystem</td></tr><tr><td>OneSyncSvc</td><td>Sync Host</td><td>Running</td><td>Automatic (Delayed Start)</td><td>LocalSystem</td></tr><tr><td>gupdate</td><td>Google Update Service</td><td>Stopped</td><td>Automatic (Delayed Start)</td><td>LocalSystem</td></tr><tr><td>W32Time</td><td>Windows Time</td><td>Running</td><td>Manual</td><td>NT Authority\LocalService</td></tr></tbody></table></div>
+</section>
+<section id="startup" class="section">
+<h2>Startup</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Name</th><th>Scope</th><th>Enabled</th><th>Command</th><th>Location</th></tr></thead><tbody><tr><td>OneDrive</td><td>User</td><td>Yes</td><td>&quot;C:\Program Files\Microsoft OneDrive\OneDrive.exe&quot; /background</td><td>HKCU\...\Run</td></tr><tr><td>ms-teams</td><td>User</td><td>Yes</td><td>ms-teams.exe msteams:system-initiated</td><td>HKCU\...\Run</td></tr><tr><td>Spotify</td><td>User</td><td>Yes</td><td>&quot;C:\Users\demo.kullanici\AppData\Roaming\Spotify\Spotify.exe&quot; /minimized</td><td>HKCU\...\Run</td></tr><tr><td>AnyDesk</td><td>Machine</td><td>Yes</td><td>&quot;C:\Program Files (x86)\AnyDesk\AnyDesk.exe&quot; --control</td><td>HKLM\...\Run</td></tr><tr><td>SecurityHealth</td><td>Machine</td><td>Yes</td><td>%windir%\system32\SecurityHealthSystray.exe</td><td>HKLM\...\Run</td></tr><tr><td>RtkAudUService</td><td>Machine</td><td>Yes</td><td>&quot;C:\Windows\System32\DriverStore\...\RtkAudUService64.exe&quot; -background</td><td>HKLM\...\Run</td></tr><tr><td>Logi Options+</td><td>Machine</td><td>Yes</td><td>&quot;C:\Program Files\LogiOptionsPlus\logioptionsplus_agent.exe&quot;</td><td>HKLM\...\Run</td></tr><tr><td>Zoom</td><td>User</td><td>No</td><td>&quot;C:\Users\demo.kullanici\AppData\Roaming\Zoom\bin\Zoom.exe&quot; --autostart</td><td>HKCU\...\Run</td></tr><tr><td>Java Update Scheduler</td><td>Machine</td><td>Yes</td><td>&quot;C:\Program Files (x86)\Common Files\Java\Java Update\jusched.exe&quot;</td><td>HKLM\...\Run (WOW64)</td></tr></tbody></table></div>
+</section>
+<section id="tasks" class="section">
+<h2>Scheduled Tasks</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Task</th><th>State</th><th>Author</th><th>Last run</th><th>Next run</th><th>Triggers</th><th>Actions</th></tr></thead><tbody><tr><td>\GoogleUpdateTaskMachineCore</td><td>Ready</td><td>Google LLC</td><td>2026-11-06 08:05</td><td>2026-11-07 08:05</td><td>Günlük 10:12</td><td>GoogleUpdate.exe /c</td></tr><tr><td>\MicrosoftEdgeUpdateTaskMachineUA</td><td>Ready</td><td>Microsoft Corporation</td><td>2026-11-06 09:05</td><td>2026-11-07 09:05</td><td>Saatlik</td><td>MicrosoftEdgeUpdate.exe /ua</td></tr><tr><td>\OneDrive Reporting Task</td><td>Ready</td><td>Microsoft Corporation</td><td>2026-11-06 10:05</td><td>2026-11-07 10:05</td><td>Günlük</td><td>OneDriveStandaloneUpdater.exe /reporting</td></tr><tr><td>\Demo Ofis\Yedekleme - Projeler</td><td>Ready</td><td>DEMO-OFIS-01\destek</td><td>2026-11-06 11:05</td><td>2026-11-07 11:05</td><td>Her gün 19:00</td><td>robocopy D:\Ortak\Projeler \\NAS\yedek /MIR</td></tr><tr><td>\Microsoft\Windows\WindowsUpdate\Scheduled Start</td><td>Ready</td><td>Microsoft Corporation</td><td>2026-11-06 12:05</td><td>2026-11-07 12:05</td><td>Sistem başlangıcında</td><td>sc.exe start wuauserv</td></tr><tr><td>\Microsoft\Office\Office Automatic Updates 2.0</td><td>Ready</td><td>Microsoft Office</td><td>2026-11-06 13:05</td><td>2026-11-07 13:05</td><td>Haftalık</td><td>OfficeC2RClient.exe /frequentupdate</td></tr></tbody></table></div>
+</section>
+<section id="events" class="section">
+<h2>Event Logs</h2>
+<p class="note">Window: 2026-10-30 10:14 – 2026-11-06 10:14</p><div class="table-wrap"><table class="data"><thead><tr><th>Channel</th><th>Readable</th><th>Critical</th><th>Errors</th><th>Warnings</th><th>Examined</th><th>Truncated</th></tr></thead><tbody><tr><td>System</td><td>Yes</td><td>2</td><td>37</td><td>112</td><td>1000</td><td>Yes</td></tr><tr><td>Application</td><td>Yes</td><td>0</td><td>64</td><td>48</td><td>812</td><td>No</td></tr><tr><td>Security</td><td>Yes</td><td>0</td><td>0</td><td>3</td><td>1000</td><td>Yes</td></tr></tbody></table></div>
+<h3>System — most frequent</h3><div class="table-wrap"><table class="data"><thead><tr><th>Provider</th><th>Event ID</th><th>Level</th><th>Count</th></tr></thead><tbody><tr><td>Service Control Manager</td><td>7031</td><td>Error</td><td>14</td></tr><tr><td>Microsoft-Windows-DistributedCOM</td><td>10016</td><td>Warning</td><td>71</td></tr><tr><td>Microsoft-Windows-Kernel-Power</td><td>41</td><td>Critical</td><td>2</td></tr><tr><td>disk</td><td>153</td><td>Warning</td><td>9</td></tr></tbody></table></div>
+<h3>Application — most frequent</h3><div class="table-wrap"><table class="data"><thead><tr><th>Provider</th><th>Event ID</th><th>Level</th><th>Count</th></tr></thead><tbody><tr><td>Application Error</td><td>1000</td><td>Error</td><td>29</td></tr><tr><td>Microsoft Office 16</td><td>2011</td><td>Warning</td><td>18</td></tr><tr><td>Windows Error Reporting</td><td>1001</td><td>Error</td><td>21</td></tr></tbody></table></div>
+<h3>Security — most frequent</h3><div class="table-wrap"><table class="data"><thead><tr><th>Provider</th><th>Event ID</th><th>Level</th><th>Count</th></tr></thead><tbody><tr><td>Microsoft-Windows-Security-Auditing</td><td>4625</td><td>Warning</td><td>3</td></tr></tbody></table></div>
+<h3>System — recent entries</h3><div class="table-wrap"><table class="data"><thead><tr><th>Time</th><th>Level</th><th>Provider</th><th>Event ID</th><th>Message</th></tr></thead><tbody><tr><td>2026-11-04 08:31</td><td>Critical</td><td>Microsoft-Windows-Kernel-Power</td><td>41</td><td>Sistem önce düzgün kapatılmadan yeniden başlatıldı.</td></tr><tr><td>2026-11-02 17:02</td><td>Error</td><td>Service Control Manager</td><td>7031</td><td>Yazdırma Biriktiricisi hizmeti beklenmedik şekilde sonlandırıldı.</td></tr><tr><td>2026-11-01 11:20</td><td>Warning</td><td>disk</td><td>153</td><td>Disk 1&#39;deki mantıksal blok adresinde G/Ç işlemi yeniden denendi.</td></tr></tbody></table></div>
+<h3>Application — recent entries</h3><div class="table-wrap"><table class="data"><thead><tr><th>Time</th><th>Level</th><th>Provider</th><th>Event ID</th><th>Message</th></tr></thead><tbody><tr><td>2026-11-05 15:44</td><td>Error</td><td>Application Error</td><td>1000</td><td>Hatalı uygulama adı: EXCEL.EXE, sürüm: 16.0.18129.20158</td></tr></tbody></table></div>
+</section>
+<section id="files" class="section">
+<h2>File Inventory</h2>
+<table class="facts"><tbody><tr><th>Folders inventoried</th><td>1</td></tr><tr><th>Files</th><td>4,812</td></tr><tr><th>Total size</th><td>36 GB</td></tr><tr><th>SHA-256 hashing</th><td>Enabled</td></tr><tr><th>Duplicate analysis</th><td>Enabled</td></tr></tbody></table>
+<h3>D:\Ortak\Projeler</h3><table class="facts"><tbody><tr><th>Readable</th><td>Yes</td></tr><tr><th>Files</th><td>4,812</td></tr><tr><th>Directories</th><td>366</td></tr><tr><th>Total size</th><td>36 GB</td></tr><tr><th>Skipped locations</th><td>0</td></tr><tr><th>Truncated</th><td>No</td></tr></tbody></table>
+<div class="table-wrap"><table class="data"><thead><tr><th>Extension</th><th>Files</th><th>Size</th></tr></thead><tbody><tr><td>.pdf</td><td>1,920</td><td>8.75 GB</td></tr><tr><td>.xlsx</td><td>1,104</td><td>1.49 GB</td></tr><tr><td>.docx</td><td>880</td><td>858.3 MB</td></tr><tr><td>.jpg</td><td>612</td><td>3.82 GB</td></tr><tr><td>.mp4</td><td>41</td><td>20.3 GB</td></tr><tr><td>.zip</td><td>255</td><td>858.3 MB</td></tr></tbody></table></div>
+<h3>Potential duplicate files</h3><p class="note">Nothing was deleted, moved or modified. Reclaimable space if de-duplicated: 2.39 GB.</p><div class="table-wrap"><table class="data"><thead><tr><th>Size</th><th>Copies</th><th>Reclaimable</th><th>Paths</th></tr></thead><tbody><tr><td>2.24 GB</td><td>2</td><td>2.24 GB</td><td>2026\Tanıtım\tanitim_filmi.mp4 | Arşiv\tanitim_filmi (1).mp4</td></tr><tr><td>80.1 MB</td><td>3</td><td>160.2 MB</td><td>2026\Sunum\sunum_v3.pptx | Masaüstü yedek\sunum_v3.pptx | Arşiv\sunum_v3 - Kopya.pptx</td></tr></tbody></table></div>
+</section>
+<section id="performance" class="section">
+<h2>Performance</h2>
+<table class="facts"><tbody><tr><th>Average CPU</th><td>22.3%</td></tr><tr><th>Peak CPU</th><td>44.4%</td></tr><tr><th>Average memory</th><td>62.1%</td></tr><tr><th>Processes</th><td>232</td></tr></tbody></table>
+<div class="table-wrap"><table class="data"><thead><tr><th>Time</th><th>CPU %</th><th>Memory %</th><th>Disk %</th><th>Network</th><th>Processes</th></tr></thead><tbody><tr><td>2026-11-06 10:14</td><td>15.9%</td><td>62.6%</td><td>7.9%</td><td>28.7 KB/s</td><td>232</td></tr><tr><td>2026-11-06 10:14</td><td>21.2%</td><td>60.1%</td><td>10.6%</td><td>167.8 KB/s</td><td>235</td></tr><tr><td>2026-11-06 10:14</td><td>17.1%</td><td>62.8%</td><td>6%</td><td>39.1 KB/s</td><td>235</td></tr><tr><td>2026-11-06 10:14</td><td>16.2%</td><td>62.4%</td><td>5%</td><td>171.9 KB/s</td><td>231</td></tr><tr><td>2026-11-06 10:14</td><td>44.4%</td><td>61.7%</td><td>3.6%</td><td>103.6 KB/s</td><td>232</td></tr><tr><td>2026-11-06 10:14</td><td>31.5%</td><td>62.9%</td><td>2.2%</td><td>104 KB/s</td><td>234</td></tr><tr><td>2026-11-06 10:14</td><td>22.9%</td><td>60.9%</td><td>3%</td><td>48.4 KB/s</td><td>231</td></tr><tr><td>2026-11-06 10:14</td><td>10.2%</td><td>62.5%</td><td>3.4%</td><td>114.8 KB/s</td><td>235</td></tr><tr><td>2026-11-06 10:14</td><td>24.8%</td><td>62%</td><td>3.1%</td><td>31.1 KB/s</td><td>233</td></tr><tr><td>2026-11-06 10:14</td><td>26.3%</td><td>62.2%</td><td>7.1%</td><td>165.5 KB/s</td><td>231</td></tr><tr><td>2026-11-06 10:14</td><td>13%</td><td>62.6%</td><td>8.4%</td><td>180.2 KB/s</td><td>233</td></tr><tr><td>2026-11-06 10:14</td><td>23.7%</td><td>62.1%</td><td>3.6%</td><td>136.7 KB/s</td><td>232</td></tr></tbody></table></div>
+</section>
+<section id="collection" class="section">
+<h2>Collection Status</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Collector</th><th>Category</th><th>Status</th><th>Items</th><th>Duration (ms)</th><th>Issues</th></tr></thead><tbody><tr><td>Hardware</td><td>Hardware</td><td>Success</td><td>14</td><td>2,140</td><td>0</td></tr><tr><td>OperatingSystem</td><td>OperatingSystem</td><td>Success</td><td>1</td><td>380</td><td>0</td></tr><tr><td>Software</td><td>Software</td><td>Success</td><td>34</td><td>3,920</td><td>0</td></tr><tr><td>Storage</td><td>Storage</td><td>Success</td><td>6</td><td>1,210</td><td>0</td></tr><tr><td>Network</td><td>Network</td><td>Success</td><td>3</td><td>880</td><td>0</td></tr><tr><td>Security</td><td>Security</td><td>Success</td><td>12</td><td>4,410</td><td>0</td></tr><tr><td>Users</td><td>Users</td><td>Success</td><td>7</td><td>1,630</td><td>0</td></tr><tr><td>Processes</td><td>Processes</td><td>Success</td><td>20</td><td>2,260</td><td>0</td></tr><tr><td>Services</td><td>Services</td><td>Success</td><td>14</td><td>1,440</td><td>0</td></tr><tr><td>Startup</td><td>Startup</td><td>Success</td><td>9</td><td>310</td><td>0</td></tr><tr><td>ScheduledTasks</td><td>ScheduledTasks</td><td>Success</td><td>6</td><td>2,980</td><td>0</td></tr><tr><td>EventLogs</td><td>EventLogs</td><td>Partial</td><td>2,812</td><td>9,120</td><td>1</td></tr><tr><td>FileSystem</td><td>FileSystem</td><td>Success</td><td>4,812</td><td>7,350</td><td>0</td></tr><tr><td>Performance</td><td>Performance</td><td>Success</td><td>12</td><td>4,200</td><td>0</td></tr></tbody></table></div>
+</section>
+<section id="issues" class="section">
+<h2>Warnings / Errors</h2>
+<div class="table-wrap"><table class="data"><thead><tr><th>Severity</th><th>Source</th><th>Message</th><th>Detail</th></tr></thead><tbody><tr><td>Warning</td><td>EventLogs</td><td>System ve Security kanallarında 1000 olay sınırına ulaşıldı; özet ilk 1000 olaydan çıkarıldı.</td><td></td></tr><tr><td>Warning</td><td>Processes</td><td>2 sürecin yürütülebilir dosya imzası doğrulanamadı.</td><td>TigerSrv, PeraScan</td></tr></tbody></table></div>
+</section>
+<footer class="page-footer"><h3>Privacy notice</h3><p>This report contains system configuration inventory only. It holds no passwords, password hashes, tokens, cookies, private keys or file contents. It was generated locally and was not transmitted anywhere.</p><p class="muted">PeraScan 1.0.0 · schema 1.0 · scan 8943a7248dff493499d53e5422e170e1</p></footer>
+
+</body>
+</html>

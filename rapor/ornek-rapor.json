@@ -1,0 +1,1976 @@
+{
+  "Metadata": {
+    "SchemaVersion": "1.0",
+    "ApplicationVersion": "1.0.0",
+    "ApplicationName": "PeraScan",
+    "ScanId": "8943a7248dff493499d53e5422e170e1",
+    "ScanStarted": "2026-11-06T10:14:00+03:00",
+    "ScanCompleted": "2026-11-06T10:14:41.6+03:00",
+    "Duration": "00:00:41.6000000",
+    "ComputerName": "DEMO-OFIS-01",
+    "CurrentUser": "DEMO-OFIS-01\\demo.kullanici",
+    "RanElevated": true,
+    "WasCancelled": false,
+    "AuthorizedCategories": [
+      "Hardware",
+      "OperatingSystem",
+      "Software",
+      "Storage",
+      "Network",
+      "Security",
+      "Users",
+      "Processes",
+      "Services",
+      "Startup",
+      "ScheduledTasks",
+      "EventLogs",
+      "FileSystem",
+      "Performance"
+    ],
+    "AuthorizedFileSystemRoots": [
+      "D:\\Ortak\\Projeler"
+    ],
+    "ReportLanguage": "tr"
+  },
+  "System": {
+    "Edition": "Windows 11 Pro",
+    "DisplayVersion": "24H2",
+    "Version": "10.0.26100",
+    "BuildNumber": "26100",
+    "UpdateBuildRevision": 4349,
+    "ProductGeneration": "Windows 11",
+    "Architecture": "64-bit",
+    "InstallDate": "2025-03-04T09:00:00+03:00",
+    "SystemLanguage": "tr-TR",
+    "Locale": "tr-TR",
+    "TimeZone": "(UTC+03:00) İstanbul",
+    "ComputerName": "DEMO-OFIS-01",
+    "Domain": "WORKGROUP",
+    "IsDomainJoined": false,
+    "LastBootTime": "2026-10-31T08:32:00+03:00",
+    "Uptime": "6.01:42:00",
+    "RegisteredOwner": "Demo Ofis",
+    "SystemDrive": "C:",
+    "WindowsDirectory": "C:\\Windows",
+    "DotNetRuntimeVersion": "8.0.31",
+    "IsVirtualMachine": false
+  },
+  "Hardware": {
+    "Processors": [
+      {
+        "Manufacturer": "GenuineIntel",
+        "Name": "Intel(R) Core(TM) i7-12700 CPU @ 2.10GHz",
+        "CoreCount": 12,
+        "LogicalProcessorCount": 20,
+        "MaxClockSpeedMhz": 2100,
+        "CurrentUsagePercent": 14,
+        "Architecture": "x64",
+        "L2CacheKb": 12288,
+        "L3CacheKb": 25600,
+        "VirtualizationEnabled": true
+      }
+    ],
+    "Memory": {
+      "TotalBytes": 34359738368,
+      "AvailableBytes": 13400000000,
+      "UsedBytes": 20959738368,
+      "UsedPercent": 61,
+      "CommitLimitBytes": 39500000000,
+      "Modules": [
+        {
+          "Slot": "DIMM 1",
+          "CapacityBytes": 17179869184,
+          "SpeedMts": 3200,
+          "Manufacturer": "Kingston",
+          "PartNumber": "KF432C16BB/16",
+          "FormFactor": "DIMM",
+          "MemoryType": "DDR4"
+        },
+        {
+          "Slot": "DIMM 2",
+          "CapacityBytes": 17179869184,
+          "SpeedMts": 3200,
+          "Manufacturer": "Kingston",
+          "PartNumber": "KF432C16BB/16",
+          "FormFactor": "DIMM",
+          "MemoryType": "DDR4"
+        }
+      ]
+    },
+    "GraphicsAdapters": [
+      {
+        "Name": "NVIDIA GeForce RTX 3060",
+        "Manufacturer": "NVIDIA",
+        "DriverVersion": "32.0.15.6094",
+        "DriverDate": "2026-05-30T09:00:00+03:00",
+        "VideoMemoryBytes": 12884901888,
+        "VideoMode": "1920 x 1080 x 4294967296 renk",
+        "Status": "OK"
+      },
+      {
+        "Name": "Intel(R) UHD Graphics 770",
+        "Manufacturer": "Intel Corporation",
+        "DriverVersion": "31.0.101.5186",
+        "DriverDate": "2026-01-10T09:00:00+03:00",
+        "VideoMemoryBytes": 2147483648,
+        "Status": "OK"
+      }
+    ],
+    "Motherboard": {
+      "Manufacturer": "ASUSTeK COMPUTER INC.",
+      "Product": "PRIME B660M-A D4",
+      "Version": "Rev 1.xx",
+      "SerialNumber": "DEMO-0000-0000",
+      "SystemManufacturer": "ASUS",
+      "SystemModel": "System Product Name",
+      "SystemSerialNumber": "DEMO-SN-0001",
+      "BiosVersion": "3010",
+      "BiosManufacturer": "American Megatrends Inc.",
+      "BiosDate": "2025-09-12T09:00:00+03:00",
+      "FirmwareType": "UEFI",
+      "SecureBootEnabled": true,
+      "ChassisType": "Desktop"
+    },
+    "Monitors": [
+      {
+        "Manufacturer": "DEL",
+        "Model": "DELL P2422H",
+        "SerialNumber": "DEMO-MON-1",
+        "HorizontalResolution": 1920,
+        "VerticalResolution": 1080,
+        "RefreshRateHz": 60,
+        "YearOfManufacture": 2023,
+        "IsPrimary": true
+      },
+      {
+        "Manufacturer": "DEL",
+        "Model": "DELL P2422H",
+        "SerialNumber": "DEMO-MON-2",
+        "HorizontalResolution": 1920,
+        "VerticalResolution": 1080,
+        "RefreshRateHz": 60,
+        "YearOfManufacture": 2023,
+        "IsPrimary": false
+      }
+    ],
+    "AudioDevices": [
+      {
+        "Name": "Realtek High Definition Audio",
+        "Manufacturer": "Realtek",
+        "DriverVersion": "6.0.9549.1",
+        "Status": "OK"
+      },
+      {
+        "Name": "NVIDIA High Definition Audio",
+        "Manufacturer": "NVIDIA",
+        "DriverVersion": "1.4.0.1",
+        "Status": "OK"
+      }
+    ],
+    "UsbDevices": [
+      {
+        "Name": "USB Giriş Aygıtı (Logitech MX Keys)",
+        "Manufacturer": "Logitech",
+        "DeviceType": "HID",
+        "Status": "OK"
+      },
+      {
+        "Name": "USB Giriş Aygıtı (Logitech MX Master 3S)",
+        "Manufacturer": "Logitech",
+        "DeviceType": "HID",
+        "Status": "OK"
+      },
+      {
+        "Name": "USB Yığın Depolama Aygıtı",
+        "Manufacturer": "SanDisk",
+        "DeviceType": "Depolama",
+        "Status": "OK"
+      },
+      {
+        "Name": "Logitech C920 HD Pro Webcam",
+        "Manufacturer": "Logitech",
+        "DeviceType": "Kamera",
+        "Status": "OK"
+      }
+    ],
+    "Batteries": []
+  },
+  "Storage": {
+    "LogicalDrives": [
+      {
+        "DriveLetter": "C:\\",
+        "VolumeLabel": "Windows",
+        "FileSystem": "NTFS",
+        "DriveType": "Fixed",
+        "TotalBytes": 511101108224,
+        "FreeBytes": 198400000000,
+        "UsedBytes": 312701108224,
+        "UsedPercent": 61.2,
+        "IsRemovable": false,
+        "IsReady": true,
+        "BitLockerStatus": "Off"
+      },
+      {
+        "DriveLetter": "D:\\",
+        "VolumeLabel": "Ortak",
+        "FileSystem": "NTFS",
+        "DriveType": "Fixed",
+        "TotalBytes": 1000202039296,
+        "FreeBytes": 46700000000,
+        "UsedBytes": 953502039296,
+        "UsedPercent": 95.3,
+        "IsRemovable": false,
+        "IsReady": true,
+        "BitLockerStatus": "Off"
+      },
+      {
+        "DriveLetter": "E:\\",
+        "VolumeLabel": "USB",
+        "FileSystem": "exFAT",
+        "DriveType": "Removable",
+        "TotalBytes": 61530000000,
+        "FreeBytes": 40100000000,
+        "UsedBytes": 21430000000,
+        "UsedPercent": 34.8,
+        "IsRemovable": true,
+        "IsReady": true
+      }
+    ],
+    "PhysicalDisks": [
+      {
+        "Model": "Samsung SSD 980 PRO 500GB",
+        "Manufacturer": "Samsung",
+        "SerialNumber": "DEMO-SSD-1",
+        "MediaType": "SSD",
+        "BusType": "NVMe",
+        "InterfaceType": "SCSI",
+        "SizeBytes": 500107862016,
+        "PartitionCount": 4,
+        "HealthStatus": "Healthy",
+        "OperationalStatus": "OK",
+        "IsRemovable": false,
+        "LogicalDrives": [
+          "C:"
+        ]
+      },
+      {
+        "Model": "WDC WD10EZEX-08WN4A0",
+        "Manufacturer": "Western Digital",
+        "SerialNumber": "DEMO-HDD-1",
+        "MediaType": "HDD",
+        "BusType": "SATA",
+        "InterfaceType": "IDE",
+        "SizeBytes": 1000202273280,
+        "PartitionCount": 1,
+        "HealthStatus": "Healthy",
+        "OperationalStatus": "OK",
+        "IsRemovable": false,
+        "LogicalDrives": [
+          "D:"
+        ]
+      },
+      {
+        "Model": "SanDisk Ultra USB 3.0",
+        "Manufacturer": "SanDisk",
+        "MediaType": "Unspecified",
+        "BusType": "USB",
+        "SizeBytes": 61530000000,
+        "PartitionCount": 1,
+        "HealthStatus": "Healthy",
+        "OperationalStatus": "OK",
+        "IsRemovable": true,
+        "LogicalDrives": [
+          "E:"
+        ]
+      }
+    ],
+    "TotalFixedCapacityBytes": 1511303147520,
+    "TotalFixedFreeBytes": 245100000000
+  },
+  "Software": {
+    "Applications": [
+      {
+        "Name": "Google Chrome",
+        "Version": "130.0.6723.92",
+        "Publisher": "Google LLC",
+        "InstallDate": "2026-10-31T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 545259520
+      },
+      {
+        "Name": "Microsoft 365 Apps for business - tr-tr",
+        "Version": "16.0.18129.20158",
+        "Publisher": "Microsoft Corporation",
+        "InstallDate": "2026-10-16T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 4089446400
+      },
+      {
+        "Name": "Microsoft Teams",
+        "Version": "24277.3502.3161.3007",
+        "Publisher": "Microsoft Corporation",
+        "InstallDate": "2026-10-22T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 639631360
+      },
+      {
+        "Name": "Zoom Workplace",
+        "Version": "6.2.6",
+        "Publisher": "Zoom Video Communications, Inc.",
+        "InstallDate": "2026-09-23T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 398458880
+      },
+      {
+        "Name": "Adobe Acrobat Reader (64-bit)",
+        "Version": "24.004.20220",
+        "Publisher": "Adobe",
+        "InstallDate": "2026-10-04T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 1153433600
+      },
+      {
+        "Name": "7-Zip 24.08 (x64)",
+        "Version": "24.08",
+        "Publisher": "Igor Pavlov",
+        "InstallDate": "2026-07-31T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 6291456
+      },
+      {
+        "Name": "VLC media player",
+        "Version": "3.0.21",
+        "Publisher": "VideoLAN",
+        "InstallDate": "2026-06-19T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 167772160
+      },
+      {
+        "Name": "Notepad++ (64-bit x64)",
+        "Version": "8.7",
+        "Publisher": "Notepad++ Team",
+        "InstallDate": "2026-09-17T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 15728640
+      },
+      {
+        "Name": "Microsoft Visual Studio Code",
+        "Version": "1.95.1",
+        "Publisher": "Microsoft Corporation",
+        "InstallDate": "2026-11-02T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 408944640
+      },
+      {
+        "Name": "Git",
+        "Version": "2.47.0",
+        "Publisher": "The Git Development Community",
+        "InstallDate": "2026-10-11T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 346030080
+      },
+      {
+        "Name": "Java 8 Update 251",
+        "Version": "8.0.2510.8",
+        "Publisher": "Oracle Corporation",
+        "InstallDate": "2022-06-10T09:00:00+03:00",
+        "Architecture": "x86",
+        "Source": "MachineWow64",
+        "EstimatedSizeBytes": 220200960
+      },
+      {
+        "Name": "AnyDesk",
+        "Version": "8.1.0",
+        "Publisher": "AnyDesk Software GmbH",
+        "InstallDate": "2026-07-09T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 8388608
+      },
+      {
+        "Name": "WinRAR 6.02 (64-bit)",
+        "Version": "6.02.0",
+        "Publisher": "win.rar GmbH",
+        "InstallDate": "2023-04-16T09:00:00+03:00",
+        "Architecture": "x86",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 9437184
+      },
+      {
+        "Name": "Logi Options+",
+        "Version": "1.83.1",
+        "Publisher": "Logitech",
+        "InstallDate": "2026-09-07T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 471859200
+      },
+      {
+        "Name": "NVIDIA Graphics Driver 560.94",
+        "Version": "560.94",
+        "Publisher": "NVIDIA Corporation",
+        "InstallDate": "2026-05-30T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 1258291200
+      },
+      {
+        "Name": "Realtek Audio Driver",
+        "Version": "6.0.9549.1",
+        "Publisher": "Realtek Semiconductor Corp.",
+        "InstallDate": "2025-09-22T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 283115520
+      },
+      {
+        "Name": "Microsoft Edge",
+        "Version": "130.0.2849.68",
+        "Publisher": "Microsoft Corporation",
+        "InstallDate": "2026-11-01T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 0
+      },
+      {
+        "Name": "Microsoft OneDrive",
+        "Version": "24.201.1006.0005",
+        "Publisher": "Microsoft Corporation",
+        "InstallDate": "2026-10-29T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 335544320
+      },
+      {
+        "Name": "Logo Tiger 3 Enterprise",
+        "Version": "2.88.00.00",
+        "Publisher": "Logo Yazılım",
+        "InstallDate": "2026-04-10T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 2516582400
+      },
+      {
+        "Name": "e-Fatura Görüntüleyici",
+        "Version": "3.4.1",
+        "Publisher": "Demo Yazılım",
+        "InstallDate": "2025-10-22T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 47185920
+      },
+      {
+        "Name": "PDF24 Creator",
+        "Version": "11.20.0",
+        "Publisher": "geek software GmbH",
+        "InstallDate": "2026-08-08T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 545259520
+      },
+      {
+        "Name": "Python 3.12.7 (64-bit)",
+        "Version": "3.12.7150.0",
+        "Publisher": "Python Software Foundation",
+        "InstallDate": "2026-08-23T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 125829120
+      },
+      {
+        "Name": "Microsoft Visual C++ 2015-2022 Redistributable (x64)",
+        "Version": "14.40.33816.0",
+        "Publisher": "Microsoft Corporation",
+        "InstallDate": "2026-07-09T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 26214400
+      },
+      {
+        "Name": "Spotify",
+        "Version": "1.2.48.405",
+        "Publisher": "Spotify AB",
+        "InstallDate": "2026-10-25T09:00:00+03:00",
+        "Architecture": "x64",
+        "Source": "MachineNative",
+        "EstimatedSizeBytes": 346030080
+      }
+    ],
+    "StorePackages": [
+      {
+        "Name": "Microsoft.WindowsCalculator",
+        "Version": "11.2409.0.0",
+        "Publisher": "CN=Microsoft Corporation",
+        "Architecture": "x64",
+        "FullName": "Microsoft.WindowsCalculator_11.2409.0.0_x64__8wekyb3d8bbwe"
+      },
+      {
+        "Name": "Microsoft.WindowsNotepad",
+        "Version": "11.2409.9.0",
+        "Publisher": "CN=Microsoft Corporation",
+        "Architecture": "x64",
+        "FullName": "Microsoft.WindowsNotepad_11.2409.9.0_x64__8wekyb3d8bbwe"
+      },
+      {
+        "Name": "Microsoft.Paint",
+        "Version": "11.2410.28.0",
+        "Publisher": "CN=Microsoft Corporation",
+        "Architecture": "x64",
+        "FullName": "Microsoft.Paint_11.2410.28.0_x64__8wekyb3d8bbwe"
+      },
+      {
+        "Name": "Microsoft.WindowsTerminal",
+        "Version": "1.21.2911.0",
+        "Publisher": "CN=Microsoft Corporation",
+        "Architecture": "x64",
+        "FullName": "Microsoft.WindowsTerminal_1.21.2911.0_x64__8wekyb3d8bbwe"
+      },
+      {
+        "Name": "Microsoft.ScreenSketch",
+        "Version": "11.2409.25.0",
+        "Publisher": "CN=Microsoft Corporation",
+        "Architecture": "x64",
+        "FullName": "Microsoft.ScreenSketch_11.2409.25.0_x64__8wekyb3d8bbwe"
+      },
+      {
+        "Name": "WhatsApp",
+        "Version": "2.2443.6.0",
+        "Publisher": "CN=Microsoft Corporation",
+        "Architecture": "x64",
+        "FullName": "WhatsApp_2.2443.6.0_x64__8wekyb3d8bbwe"
+      }
+    ],
+    "Runtimes": [
+      {
+        "Name": "Microsoft.NETCore.App",
+        "Version": "8.0.31",
+        "Path": "C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App",
+        "Kind": ".NET"
+      },
+      {
+        "Name": "Microsoft.WindowsDesktop.App",
+        "Version": "8.0.31",
+        "Path": "C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App",
+        "Kind": ".NET"
+      },
+      {
+        "Name": "Microsoft.AspNetCore.App",
+        "Version": "8.0.31",
+        "Path": "C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App",
+        "Kind": ".NET"
+      },
+      {
+        "Name": ".NET Framework",
+        "Version": "4.8.1",
+        "Path": "C:\\Program Files\\dotnet\\shared\\.NET Framework",
+        "Kind": ".NET Framework"
+      }
+    ],
+    "TotalCount": 34
+  },
+  "Network": {
+    "HostName": "DEMO-OFIS-01",
+    "DomainName": "",
+    "Adapters": [
+      {
+        "Name": "Ethernet",
+        "Description": "Intel(R) Ethernet Connection (17) I219-V",
+        "Manufacturer": "Intel",
+        "MacAddress": "00-11-22-33-44-55",
+        "Status": "Up",
+        "InterfaceType": "Ethernet",
+        "SpeedBitsPerSecond": 1000000000,
+        "IPv4Addresses": [
+          "192.168.1.42"
+        ],
+        "IPv6Addresses": [
+          "fe80::1c2b:3d4e:5f60:7a8b"
+        ],
+        "SubnetMasks": [
+          "255.255.255.0"
+        ],
+        "Gateways": [
+          "192.168.1.1"
+        ],
+        "DnsServers": [
+          "192.168.1.1",
+          "1.1.1.1"
+        ],
+        "DhcpEnabled": true,
+        "DhcpServer": "192.168.1.1",
+        "DnsSuffix": "ofis.local",
+        "BytesReceived": 48200000000,
+        "BytesSent": 6900000000,
+        "IsVirtualOrLoopback": false
+      },
+      {
+        "Name": "Wi-Fi",
+        "Description": "Intel(R) Wi-Fi 6 AX201 160MHz",
+        "Manufacturer": "Intel",
+        "MacAddress": "00-11-22-33-44-66",
+        "Status": "Disconnected",
+        "InterfaceType": "Wireless80211",
+        "IPv4Addresses": [],
+        "IPv6Addresses": [],
+        "SubnetMasks": [],
+        "Gateways": [],
+        "DnsServers": [],
+        "DhcpEnabled": true,
+        "IsVirtualOrLoopback": false
+      },
+      {
+        "Name": "vEthernet (Default Switch)",
+        "Description": "Hyper-V Virtual Ethernet Adapter",
+        "Manufacturer": "Microsoft",
+        "MacAddress": "00-15-5D-00-00-01",
+        "Status": "Up",
+        "InterfaceType": "Ethernet",
+        "SpeedBitsPerSecond": 10000000000,
+        "IPv4Addresses": [
+          "172.20.112.1"
+        ],
+        "IPv6Addresses": [],
+        "SubnetMasks": [
+          "255.255.240.0"
+        ],
+        "Gateways": [],
+        "DnsServers": [],
+        "DhcpEnabled": false,
+        "IsVirtualOrLoopback": true
+      }
+    ],
+    "Proxy": {
+      "ProxyEnabled": false
+    },
+    "IsNetworkAvailable": true,
+    "ActiveAdapterCount": 1
+  },
+  "Security": {
+    "Defender": {
+      "Installed": "Enabled",
+      "AntimalwareEnabled": "Enabled",
+      "RealTimeProtection": "Enabled",
+      "TamperProtection": "Enabled",
+      "SignatureVersion": "1.421.512.0",
+      "SignatureAgeDays": 1,
+      "LastSignatureUpdate": "2026-11-05T07:40:00+03:00",
+      "EngineVersion": "1.1.24090.11",
+      "LastQuickScan": "2026-11-05T12:05:00+03:00",
+      "LastFullScan": "2026-09-29T13:00:00+03:00"
+    },
+    "FirewallProfiles": [
+      {
+        "Profile": "Domain",
+        "Enabled": "Enabled",
+        "DefaultInboundAction": "Block",
+        "DefaultOutboundAction": "Allow"
+      },
+      {
+        "Profile": "Private",
+        "Enabled": "Enabled",
+        "DefaultInboundAction": "Block",
+        "DefaultOutboundAction": "Allow"
+      },
+      {
+        "Profile": "Public",
+        "Enabled": "Disabled",
+        "DefaultInboundAction": "Allow",
+        "DefaultOutboundAction": "Allow"
+      }
+    ],
+    "BitLockerVolumes": [
+      {
+        "DriveLetter": "C:",
+        "ProtectionStatus": "Off",
+        "EncryptionMethod": "None",
+        "EncryptionPercentage": 0,
+        "ConversionStatus": "FullyDecrypted",
+        "Protected": "Disabled"
+      },
+      {
+        "DriveLetter": "D:",
+        "ProtectionStatus": "Off",
+        "EncryptionMethod": "None",
+        "EncryptionPercentage": 0,
+        "ConversionStatus": "FullyDecrypted",
+        "Protected": "Disabled"
+      }
+    ],
+    "Uac": {
+      "Enabled": "Enabled",
+      "AdminConsentPrompt": "Consent for non-Windows binaries",
+      "SecureDesktopPrompt": true
+    },
+    "WindowsUpdate": {
+      "LastInstallDate": "2026-10-28T03:12:00+03:00",
+      "LastSearchDate": "2026-11-06T08:50:00+03:00",
+      "RebootRequired": true,
+      "InstalledUpdates": [
+        {
+          "HotFixId": "KB5066835",
+          "Description": "Security Update",
+          "InstalledOn": "2026-10-28T09:00:00+03:00"
+        },
+        {
+          "HotFixId": "KB5066131",
+          "Description": "Update",
+          "InstalledOn": "2026-10-28T09:00:00+03:00"
+        },
+        {
+          "HotFixId": "KB5065426",
+          "Description": "Security Update",
+          "InstalledOn": "2026-09-27T09:00:00+03:00"
+        },
+        {
+          "HotFixId": "KB5064401",
+          "Description": "Update",
+          "InstalledOn": "2026-09-15T09:00:00+03:00"
+        }
+      ],
+      "DaysSinceLastUpdate": 9
+    },
+    "SecurityProducts": [
+      {
+        "Name": "Windows Defender",
+        "ProductType": "Antivirus",
+        "Enabled": "Enabled",
+        "UpToDate": "Enabled",
+        "ExecutablePath": "windowsdefender://"
+      }
+    ],
+    "SecureBoot": "Enabled",
+    "FirewallOverall": "Disabled",
+    "SystemDriveEncryption": "Disabled"
+  },
+  "Users": {
+    "CurrentUser": {
+      "UserName": "demo.kullanici",
+      "QualifiedName": "DEMO-OFIS-01\\demo.kullanici",
+      "Sid": "S-1-5-21-1000000000-2000000000-3000000000-1001",
+      "ProfilePath": "C:\\Users\\demo.kullanici",
+      "IsLocalAccount": true,
+      "IsElevated": true,
+      "IsAdministratorMember": true
+    },
+    "LocalUsers": [
+      {
+        "Name": "demo.kullanici",
+        "FullName": "Demo Kullanıcı",
+        "Sid": "S-1-5-21-…-1001",
+        "IsDisabled": false,
+        "IsLockedOut": false,
+        "PasswordNeverExpires": false,
+        "Groups": [
+          "Administrators",
+          "Users"
+        ]
+      },
+      {
+        "Name": "destek",
+        "FullName": "BT Destek",
+        "Description": "Uzaktan destek hesabı",
+        "Sid": "S-1-5-21-…-1002",
+        "IsDisabled": false,
+        "IsLockedOut": false,
+        "PasswordNeverExpires": true,
+        "Groups": [
+          "Administrators"
+        ]
+      },
+      {
+        "Name": "Administrator",
+        "Description": "Built-in account for administering the computer/domain",
+        "Sid": "S-1-5-21-…-500",
+        "IsDisabled": true,
+        "PasswordNeverExpires": true,
+        "Groups": [
+          "Administrators"
+        ]
+      },
+      {
+        "Name": "Guest",
+        "Description": "Built-in account for guest access",
+        "Sid": "S-1-5-21-…-501",
+        "IsDisabled": true,
+        "Groups": [
+          "Guests"
+        ]
+      }
+    ],
+    "LocalGroups": [
+      {
+        "Name": "Administrators",
+        "Description": "Administrators have complete and unrestricted access",
+        "Sid": "S-1-5-32-544",
+        "Members": [
+          "Administrator",
+          "demo.kullanici",
+          "destek"
+        ]
+      },
+      {
+        "Name": "Users",
+        "Description": "Users are prevented from making accidental or intentional system-wide changes",
+        "Sid": "S-1-5-32-545",
+        "Members": [
+          "demo.kullanici"
+        ]
+      },
+      {
+        "Name": "Remote Desktop Users",
+        "Description": "Members are granted the right to logon remotely",
+        "Sid": "S-1-5-32-555",
+        "Members": [
+          "destek"
+        ]
+      }
+    ],
+    "Administrators": [
+      "Administrator",
+      "demo.kullanici",
+      "destek"
+    ]
+  },
+  "Processes": [
+    {
+      "Name": "System",
+      "ProcessId": 4,
+      "ParentProcessId": 0,
+      "User": "SYSTEM",
+      "MemoryBytes": 0,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "Publisher": "Microsoft Windows",
+      "IsSigned": true,
+      "ThreadCount": 16,
+      "Access": "Full"
+    },
+    {
+      "Name": "explorer",
+      "ProcessId": 6120,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 190840832,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\explorer.exe",
+      "Publisher": "Microsoft Windows",
+      "IsSigned": true,
+      "ThreadCount": 12,
+      "Access": "Full"
+    },
+    {
+      "Name": "chrome",
+      "ProcessId": 9112,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 432013312,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\chrome.exe",
+      "Publisher": "Google LLC",
+      "IsSigned": true,
+      "ThreadCount": 44,
+      "Access": "Full"
+    },
+    {
+      "Name": "chrome",
+      "ProcessId": 9348,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 278921216,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\chrome.exe",
+      "Publisher": "Google LLC",
+      "IsSigned": true,
+      "ThreadCount": 40,
+      "Access": "Full"
+    },
+    {
+      "Name": "chrome",
+      "ProcessId": 10024,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 207618048,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\chrome.exe",
+      "Publisher": "Google LLC",
+      "IsSigned": true,
+      "ThreadCount": 36,
+      "Access": "Full"
+    },
+    {
+      "Name": "EXCEL",
+      "ProcessId": 11840,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 373293056,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\EXCEL.exe",
+      "Publisher": "Microsoft Corporation",
+      "IsSigned": true,
+      "ThreadCount": 12,
+      "Access": "Full"
+    },
+    {
+      "Name": "OUTLOOK",
+      "ProcessId": 7716,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 312475648,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\OUTLOOK.exe",
+      "Publisher": "Microsoft Corporation",
+      "IsSigned": true,
+      "ThreadCount": 48,
+      "Access": "Full"
+    },
+    {
+      "Name": "ms-teams",
+      "ProcessId": 13288,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 357564416,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\ms-teams.exe",
+      "Publisher": "Microsoft Corporation",
+      "IsSigned": true,
+      "ThreadCount": 20,
+      "Access": "Full"
+    },
+    {
+      "Name": "MsMpEng",
+      "ProcessId": 4012,
+      "ParentProcessId": 1072,
+      "User": "SYSTEM",
+      "MemoryBytes": 252706816,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\MsMpEng.exe",
+      "Publisher": "Microsoft Windows Publisher",
+      "IsSigned": true,
+      "ThreadCount": 24,
+      "Access": "Full"
+    },
+    {
+      "Name": "svchost",
+      "ProcessId": 1144,
+      "ParentProcessId": 1072,
+      "User": "SYSTEM",
+      "MemoryBytes": 39845888,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\svchost.exe",
+      "Publisher": "Microsoft Windows Publisher",
+      "IsSigned": true,
+      "ThreadCount": 36,
+      "Access": "Full"
+    },
+    {
+      "Name": "svchost",
+      "ProcessId": 1588,
+      "ParentProcessId": 1072,
+      "User": "SYSTEM",
+      "MemoryBytes": 25165824,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\svchost.exe",
+      "Publisher": "Microsoft Windows Publisher",
+      "IsSigned": true,
+      "ThreadCount": 40,
+      "Access": "Full"
+    },
+    {
+      "Name": "AnyDesk",
+      "ProcessId": 5520,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 32505856,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\AnyDesk.exe",
+      "Publisher": "philandro Software GmbH",
+      "IsSigned": true,
+      "ThreadCount": 12,
+      "Access": "Full"
+    },
+    {
+      "Name": "Code",
+      "ProcessId": 14520,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 301989888,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\Code.exe",
+      "Publisher": "Microsoft Corporation",
+      "IsSigned": true,
+      "ThreadCount": 12,
+      "Access": "Full"
+    },
+    {
+      "Name": "OneDrive",
+      "ProcessId": 8840,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 100663296,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\OneDrive.exe",
+      "Publisher": "Microsoft Corporation",
+      "IsSigned": true,
+      "ThreadCount": 12,
+      "Access": "Full"
+    },
+    {
+      "Name": "LogiOptionsPlus_agent",
+      "ProcessId": 6608,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 77594624,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\LogiOptionsPlus_agent.exe",
+      "Publisher": "Logitech Inc",
+      "IsSigned": true,
+      "ThreadCount": 20,
+      "Access": "Full"
+    },
+    {
+      "Name": "Spotify",
+      "ProcessId": 15112,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 220200960,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\Spotify.exe",
+      "Publisher": "Spotify AB",
+      "IsSigned": true,
+      "ThreadCount": 44,
+      "Access": "Full"
+    },
+    {
+      "Name": "dwm",
+      "ProcessId": 1340,
+      "ParentProcessId": 1072,
+      "User": "SYSTEM",
+      "MemoryBytes": 123731968,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\dwm.exe",
+      "Publisher": "Microsoft Windows",
+      "IsSigned": true,
+      "ThreadCount": 32,
+      "Access": "Full"
+    },
+    {
+      "Name": "TigerSrv",
+      "ProcessId": 3380,
+      "ParentProcessId": 1072,
+      "User": "SYSTEM",
+      "MemoryBytes": 146800640,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\TigerSrv.exe",
+      "IsSigned": false,
+      "ThreadCount": 32,
+      "Access": "Full"
+    },
+    {
+      "Name": "PeraScan",
+      "ProcessId": 16200,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 100663296,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\PeraScan.exe",
+      "Publisher": "PeraScan Project",
+      "IsSigned": false,
+      "ThreadCount": 12,
+      "Access": "Full"
+    },
+    {
+      "Name": "RuntimeBroker",
+      "ProcessId": 7012,
+      "ParentProcessId": 1072,
+      "User": "demo.kullanici",
+      "MemoryBytes": 23068672,
+      "StartTime": "2026-11-06T08:33:00+03:00",
+      "ExecutablePath": "C:\\Program Files\\…\\RuntimeBroker.exe",
+      "Publisher": "Microsoft Windows",
+      "IsSigned": true,
+      "ThreadCount": 24,
+      "Access": "Full"
+    }
+  ],
+  "Services": [
+    {
+      "Name": "WinDefend",
+      "DisplayName": "Microsoft Defender Antivirus Service",
+      "Description": "Microsoft Defender Antivirus Service hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "mpssvc",
+      "DisplayName": "Windows Defender Firewall",
+      "Description": "Windows Defender Firewall hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": "NT Authority\\LocalService",
+      "AccessLimited": false
+    },
+    {
+      "Name": "wuauserv",
+      "DisplayName": "Windows Update",
+      "Description": "Windows Update hizmeti.",
+      "Status": "Running",
+      "StartType": "Manual",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "Spooler",
+      "DisplayName": "Yazdırma Biriktiricisi",
+      "Description": "Yazdırma Biriktiricisi hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "BITS",
+      "DisplayName": "Background Intelligent Transfer Service",
+      "Description": "Background Intelligent Transfer Service hizmeti.",
+      "Status": "Stopped",
+      "StartType": "Manual",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "AnyDesk",
+      "DisplayName": "AnyDesk Service",
+      "Description": "AnyDesk Service hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "TigerSrv",
+      "DisplayName": "Logo Tiger Uygulama Sunucusu",
+      "Description": "Logo Tiger Uygulama Sunucusu hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": ".\\destek",
+      "AccessLimited": false
+    },
+    {
+      "Name": "RemoteRegistry",
+      "DisplayName": "Remote Registry",
+      "Description": "Remote Registry hizmeti.",
+      "Status": "Stopped",
+      "StartType": "Disabled",
+      "Account": "NT Authority\\LocalService",
+      "AccessLimited": false
+    },
+    {
+      "Name": "TermService",
+      "DisplayName": "Remote Desktop Services",
+      "Description": "Remote Desktop Services hizmeti.",
+      "Status": "Running",
+      "StartType": "Manual",
+      "Account": "NT Authority\\NetworkService",
+      "AccessLimited": false
+    },
+    {
+      "Name": "Dnscache",
+      "DisplayName": "DNS Client",
+      "Description": "DNS Client hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": "NT Authority\\NetworkService",
+      "AccessLimited": false
+    },
+    {
+      "Name": "NVDisplay.ContainerLocalSystem",
+      "DisplayName": "NVIDIA Display Container LS",
+      "Description": "NVIDIA Display Container LS hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "OneSyncSvc",
+      "DisplayName": "Sync Host",
+      "Description": "Sync Host hizmeti.",
+      "Status": "Running",
+      "StartType": "Automatic (Delayed Start)",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "gupdate",
+      "DisplayName": "Google Update Service",
+      "Description": "Google Update Service hizmeti.",
+      "Status": "Stopped",
+      "StartType": "Automatic (Delayed Start)",
+      "Account": "LocalSystem",
+      "AccessLimited": false
+    },
+    {
+      "Name": "W32Time",
+      "DisplayName": "Windows Time",
+      "Description": "Windows Time hizmeti.",
+      "Status": "Running",
+      "StartType": "Manual",
+      "Account": "NT Authority\\LocalService",
+      "AccessLimited": false
+    }
+  ],
+  "Startup": [
+    {
+      "Name": "OneDrive",
+      "Command": "\"C:\\Program Files\\Microsoft OneDrive\\OneDrive.exe\" /background",
+      "Location": "HKCU\\...\\Run",
+      "Scope": "User",
+      "User": "demo.kullanici",
+      "IsEnabled": true
+    },
+    {
+      "Name": "ms-teams",
+      "Command": "ms-teams.exe msteams:system-initiated",
+      "Location": "HKCU\\...\\Run",
+      "Scope": "User",
+      "User": "demo.kullanici",
+      "IsEnabled": true
+    },
+    {
+      "Name": "Spotify",
+      "Command": "\"C:\\Users\\demo.kullanici\\AppData\\Roaming\\Spotify\\Spotify.exe\" /minimized",
+      "Location": "HKCU\\...\\Run",
+      "Scope": "User",
+      "User": "demo.kullanici",
+      "IsEnabled": true
+    },
+    {
+      "Name": "AnyDesk",
+      "Command": "\"C:\\Program Files (x86)\\AnyDesk\\AnyDesk.exe\" --control",
+      "Location": "HKLM\\...\\Run",
+      "Scope": "Machine",
+      "IsEnabled": true
+    },
+    {
+      "Name": "SecurityHealth",
+      "Command": "%windir%\\system32\\SecurityHealthSystray.exe",
+      "Location": "HKLM\\...\\Run",
+      "Scope": "Machine",
+      "IsEnabled": true
+    },
+    {
+      "Name": "RtkAudUService",
+      "Command": "\"C:\\Windows\\System32\\DriverStore\\...\\RtkAudUService64.exe\" -background",
+      "Location": "HKLM\\...\\Run",
+      "Scope": "Machine",
+      "IsEnabled": true
+    },
+    {
+      "Name": "Logi Options+",
+      "Command": "\"C:\\Program Files\\LogiOptionsPlus\\logioptionsplus_agent.exe\"",
+      "Location": "HKLM\\...\\Run",
+      "Scope": "Machine",
+      "IsEnabled": true
+    },
+    {
+      "Name": "Zoom",
+      "Command": "\"C:\\Users\\demo.kullanici\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe\" --autostart",
+      "Location": "HKCU\\...\\Run",
+      "Scope": "User",
+      "User": "demo.kullanici",
+      "IsEnabled": false
+    },
+    {
+      "Name": "Java Update Scheduler",
+      "Command": "\"C:\\Program Files (x86)\\Common Files\\Java\\Java Update\\jusched.exe\"",
+      "Location": "HKLM\\...\\Run (WOW64)",
+      "Scope": "Machine",
+      "IsEnabled": true
+    }
+  ],
+  "ScheduledTasks": [
+    {
+      "Name": "GoogleUpdateTaskMachineCore",
+      "Path": "\\GoogleUpdateTaskMachineCore",
+      "State": "Ready",
+      "Author": "Google LLC",
+      "LastRunTime": "2026-11-06T08:05:00+03:00",
+      "NextRunTime": "2026-11-07T08:05:00+03:00",
+      "LastTaskResult": 0,
+      "TriggerSummary": "Günlük 10:12",
+      "ActionSummary": "GoogleUpdate.exe /c",
+      "IsEnabled": true
+    },
+    {
+      "Name": "MicrosoftEdgeUpdateTaskMachineUA",
+      "Path": "\\MicrosoftEdgeUpdateTaskMachineUA",
+      "State": "Ready",
+      "Author": "Microsoft Corporation",
+      "LastRunTime": "2026-11-06T09:05:00+03:00",
+      "NextRunTime": "2026-11-07T09:05:00+03:00",
+      "LastTaskResult": 0,
+      "TriggerSummary": "Saatlik",
+      "ActionSummary": "MicrosoftEdgeUpdate.exe /ua",
+      "IsEnabled": true
+    },
+    {
+      "Name": "OneDrive Reporting Task",
+      "Path": "\\OneDrive Reporting Task",
+      "State": "Ready",
+      "Author": "Microsoft Corporation",
+      "LastRunTime": "2026-11-06T10:05:00+03:00",
+      "NextRunTime": "2026-11-07T10:05:00+03:00",
+      "LastTaskResult": 0,
+      "TriggerSummary": "Günlük",
+      "ActionSummary": "OneDriveStandaloneUpdater.exe /reporting",
+      "IsEnabled": true
+    },
+    {
+      "Name": "Yedekleme - Projeler",
+      "Path": "\\Demo Ofis\\Yedekleme - Projeler",
+      "State": "Ready",
+      "Author": "DEMO-OFIS-01\\destek",
+      "LastRunTime": "2026-11-06T11:05:00+03:00",
+      "NextRunTime": "2026-11-07T11:05:00+03:00",
+      "LastTaskResult": 1,
+      "TriggerSummary": "Her gün 19:00",
+      "ActionSummary": "robocopy D:\\Ortak\\Projeler \\\\NAS\\yedek /MIR",
+      "IsEnabled": true
+    },
+    {
+      "Name": "Scheduled Start",
+      "Path": "\\Microsoft\\Windows\\WindowsUpdate\\Scheduled Start",
+      "State": "Ready",
+      "Author": "Microsoft Corporation",
+      "LastRunTime": "2026-11-06T12:05:00+03:00",
+      "NextRunTime": "2026-11-07T12:05:00+03:00",
+      "LastTaskResult": 0,
+      "TriggerSummary": "Sistem başlangıcında",
+      "ActionSummary": "sc.exe start wuauserv",
+      "IsEnabled": true
+    },
+    {
+      "Name": "Office Automatic Updates 2.0",
+      "Path": "\\Microsoft\\Office\\Office Automatic Updates 2.0",
+      "State": "Ready",
+      "Author": "Microsoft Office",
+      "LastRunTime": "2026-11-06T13:05:00+03:00",
+      "NextRunTime": "2026-11-07T13:05:00+03:00",
+      "LastTaskResult": 0,
+      "TriggerSummary": "Haftalık",
+      "ActionSummary": "OfficeC2RClient.exe /frequentupdate",
+      "IsEnabled": true
+    }
+  ],
+  "EventLogs": {
+    "WindowStart": "2026-10-30T10:14:00+03:00",
+    "WindowEnd": "2026-11-06T10:14:00+03:00",
+    "Channels": [
+      {
+        "Channel": "System",
+        "Accessible": true,
+        "CriticalCount": 2,
+        "ErrorCount": 37,
+        "WarningCount": 112,
+        "TotalExamined": 1000,
+        "Truncated": true,
+        "Records": [
+          {
+            "TimeCreated": "2026-11-04T08:31:00+03:00",
+            "Level": "Critical",
+            "Provider": "Microsoft-Windows-Kernel-Power",
+            "EventId": 41,
+            "Message": "Sistem önce düzgün kapatılmadan yeniden başlatıldı."
+          },
+          {
+            "TimeCreated": "2026-11-02T17:02:00+03:00",
+            "Level": "Error",
+            "Provider": "Service Control Manager",
+            "EventId": 7031,
+            "Message": "Yazdırma Biriktiricisi hizmeti beklenmedik şekilde sonlandırıldı."
+          },
+          {
+            "TimeCreated": "2026-11-01T11:20:00+03:00",
+            "Level": "Warning",
+            "Provider": "disk",
+            "EventId": 153,
+            "Message": "Disk 1'deki mantıksal blok adresinde G/Ç işlemi yeniden denendi."
+          }
+        ],
+        "TopEvents": [
+          {
+            "Provider": "Service Control Manager",
+            "EventId": 7031,
+            "Level": "Error",
+            "Count": 14
+          },
+          {
+            "Provider": "Microsoft-Windows-DistributedCOM",
+            "EventId": 10016,
+            "Level": "Warning",
+            "Count": 71
+          },
+          {
+            "Provider": "Microsoft-Windows-Kernel-Power",
+            "EventId": 41,
+            "Level": "Critical",
+            "Count": 2
+          },
+          {
+            "Provider": "disk",
+            "EventId": 153,
+            "Level": "Warning",
+            "Count": 9
+          }
+        ]
+      },
+      {
+        "Channel": "Application",
+        "Accessible": true,
+        "CriticalCount": 0,
+        "ErrorCount": 64,
+        "WarningCount": 48,
+        "TotalExamined": 812,
+        "Truncated": false,
+        "Records": [
+          {
+            "TimeCreated": "2026-11-05T15:44:00+03:00",
+            "Level": "Error",
+            "Provider": "Application Error",
+            "EventId": 1000,
+            "Message": "Hatalı uygulama adı: EXCEL.EXE, sürüm: 16.0.18129.20158"
+          }
+        ],
+        "TopEvents": [
+          {
+            "Provider": "Application Error",
+            "EventId": 1000,
+            "Level": "Error",
+            "Count": 29
+          },
+          {
+            "Provider": "Microsoft Office 16",
+            "EventId": 2011,
+            "Level": "Warning",
+            "Count": 18
+          },
+          {
+            "Provider": "Windows Error Reporting",
+            "EventId": 1001,
+            "Level": "Error",
+            "Count": 21
+          }
+        ]
+      },
+      {
+        "Channel": "Security",
+        "Accessible": true,
+        "CriticalCount": 0,
+        "ErrorCount": 0,
+        "WarningCount": 3,
+        "TotalExamined": 1000,
+        "Truncated": true,
+        "Records": [],
+        "TopEvents": [
+          {
+            "Provider": "Microsoft-Windows-Security-Auditing",
+            "EventId": 4625,
+            "Level": "Warning",
+            "Count": 3
+          }
+        ]
+      }
+    ],
+    "TotalCritical": 2,
+    "TotalErrors": 101,
+    "TotalWarnings": 163
+  },
+  "Files": {
+    "Roots": [
+      {
+        "RootPath": "D:\\Ortak\\Projeler",
+        "Accessible": true,
+        "FileCount": 4812,
+        "DirectoryCount": 366,
+        "TotalSizeBytes": 38700000000,
+        "InaccessiblePaths": [],
+        "Truncated": false,
+        "Files": [
+          {
+            "RelativePath": "2026\\Teklifler\\Teklif_2026-10.pdf",
+            "Name": "Teklif_2026-10.pdf",
+            "Extension": ".pdf",
+            "SizeBytes": 1240000,
+            "ModifiedUtc": "2026-10-25T09:00:00+03:00",
+            "Attributes": "Archive",
+            "IsReadOnly": false,
+            "IsHidden": false,
+            "IsSystem": false
+          },
+          {
+            "RelativePath": "2026\\Tanıtım\\tanitim_filmi.mp4",
+            "Name": "tanitim_filmi.mp4",
+            "Extension": ".mp4",
+            "SizeBytes": 2400000000,
+            "ModifiedUtc": "2026-10-07T09:00:00+03:00",
+            "Attributes": "Archive",
+            "IsReadOnly": false,
+            "IsHidden": false,
+            "IsSystem": false
+          }
+        ],
+        "ByExtension": [
+          {
+            "Extension": ".pdf",
+            "Count": 1920,
+            "TotalBytes": 9400000000
+          },
+          {
+            "Extension": ".xlsx",
+            "Count": 1104,
+            "TotalBytes": 1600000000
+          },
+          {
+            "Extension": ".docx",
+            "Count": 880,
+            "TotalBytes": 900000000
+          },
+          {
+            "Extension": ".jpg",
+            "Count": 612,
+            "TotalBytes": 4100000000
+          },
+          {
+            "Extension": ".mp4",
+            "Count": 41,
+            "TotalBytes": 21800000000
+          },
+          {
+            "Extension": ".zip",
+            "Count": 255,
+            "TotalBytes": 900000000
+          }
+        ]
+      }
+    ],
+    "DuplicateGroups": [
+      {
+        "SizeBytes": 2400000000,
+        "Sha256": "9f2c…e71a",
+        "Paths": [
+          "2026\\Tanıtım\\tanitim_filmi.mp4",
+          "Arşiv\\tanitim_filmi (1).mp4"
+        ],
+        "WastedBytes": 2400000000
+      },
+      {
+        "SizeBytes": 84000000,
+        "Sha256": "41b0…09cd",
+        "Paths": [
+          "2026\\Sunum\\sunum_v3.pptx",
+          "Masaüstü yedek\\sunum_v3.pptx",
+          "Arşiv\\sunum_v3 - Kopya.pptx"
+        ],
+        "WastedBytes": 168000000
+      }
+    ],
+    "HashingEnabled": true,
+    "DuplicateAnalysisEnabled": true,
+    "TotalFiles": 4812,
+    "TotalSizeBytes": 38700000000,
+    "ReclaimableBytes": 2568000000
+  },
+  "Performance": {
+    "Samples": [
+      {
+        "Timestamp": "2026-11-06T10:14:00+03:00",
+        "CpuPercent": 15.9,
+        "MemoryPercent": 62.6,
+        "DiskPercent": 7.9,
+        "NetworkBytesPerSecond": 29407,
+        "ProcessCount": 232
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:03.5+03:00",
+        "CpuPercent": 21.2,
+        "MemoryPercent": 60.1,
+        "DiskPercent": 10.6,
+        "NetworkBytesPerSecond": 171841,
+        "ProcessCount": 235
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:07+03:00",
+        "CpuPercent": 17.1,
+        "MemoryPercent": 62.8,
+        "DiskPercent": 6,
+        "NetworkBytesPerSecond": 40033,
+        "ProcessCount": 235
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:10.5+03:00",
+        "CpuPercent": 16.2,
+        "MemoryPercent": 62.4,
+        "DiskPercent": 5,
+        "NetworkBytesPerSecond": 176001,
+        "ProcessCount": 231
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:14+03:00",
+        "CpuPercent": 44.4,
+        "MemoryPercent": 61.7,
+        "DiskPercent": 3.6,
+        "NetworkBytesPerSecond": 106048,
+        "ProcessCount": 232
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:17.5+03:00",
+        "CpuPercent": 31.5,
+        "MemoryPercent": 62.9,
+        "DiskPercent": 2.2,
+        "NetworkBytesPerSecond": 106455,
+        "ProcessCount": 234
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:21+03:00",
+        "CpuPercent": 22.9,
+        "MemoryPercent": 60.9,
+        "DiskPercent": 3,
+        "NetworkBytesPerSecond": 49526,
+        "ProcessCount": 231
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:24.5+03:00",
+        "CpuPercent": 10.2,
+        "MemoryPercent": 62.5,
+        "DiskPercent": 3.4,
+        "NetworkBytesPerSecond": 117542,
+        "ProcessCount": 235
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:28+03:00",
+        "CpuPercent": 24.8,
+        "MemoryPercent": 62,
+        "DiskPercent": 3.1,
+        "NetworkBytesPerSecond": 31807,
+        "ProcessCount": 233
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:31.5+03:00",
+        "CpuPercent": 26.3,
+        "MemoryPercent": 62.2,
+        "DiskPercent": 7.1,
+        "NetworkBytesPerSecond": 169522,
+        "ProcessCount": 231
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:35+03:00",
+        "CpuPercent": 13,
+        "MemoryPercent": 62.6,
+        "DiskPercent": 8.4,
+        "NetworkBytesPerSecond": 184530,
+        "ProcessCount": 233
+      },
+      {
+        "Timestamp": "2026-11-06T10:14:38.5+03:00",
+        "CpuPercent": 23.7,
+        "MemoryPercent": 62.1,
+        "DiskPercent": 3.6,
+        "NetworkBytesPerSecond": 139930,
+        "ProcessCount": 232
+      }
+    ],
+    "AverageCpuPercent": 22.3,
+    "AverageMemoryPercent": 62.1,
+    "PeakCpuPercent": 44.4,
+    "ProcessCount": 232
+  },
+  "HealthScore": {
+    "Score": 60,
+    "Factors": [
+      {
+        "Area": "Security",
+        "Key": "antimalware.enabled",
+        "Description": "Real-time malware protection is active.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "antimalware.signatures.current",
+        "Description": "Malware signatures are current.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "firewall.partial.off",
+        "Description": "Windows Firewall is disabled for 1 profile(s).",
+        "Points": -9,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "uac.enabled",
+        "Description": "User Account Control is enabled.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "bitlocker.disabled",
+        "Description": "The system volume is not encrypted.",
+        "Points": -6,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "secureboot.enabled",
+        "Description": "Secure Boot is enabled.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Updates",
+        "Key": "updates.reboot.pending",
+        "Description": "Windows is waiting for a restart to finish installing updates.",
+        "Points": -8,
+        "Evaluated": true
+      },
+      {
+        "Area": "Updates",
+        "Key": "updates.current",
+        "Description": "Windows was updated 9 day(s) ago.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Storage",
+        "Key": "storage.ok.C:\\",
+        "Description": "Volume C:\\ has 38,8% free space.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Storage",
+        "Key": "storage.critical.D:\\",
+        "Description": "Volume D:\\ has only 4,7% free space.",
+        "Points": -12,
+        "Evaluated": true
+      },
+      {
+        "Area": "Stability",
+        "Key": "events.critical.ok",
+        "Description": "2 critical event(s) in the selected window.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Stability",
+        "Key": "events.errors",
+        "Description": "101 error events were recorded in the selected window.",
+        "Points": -5,
+        "Evaluated": true
+      },
+      {
+        "Area": "Performance",
+        "Key": "startup.ok",
+        "Description": "8 auto-start entr(ies) configured.",
+        "Points": 0,
+        "Evaluated": true
+      },
+      {
+        "Area": "Performance",
+        "Key": "memory.ok",
+        "Description": "Memory utilisation was 61% during the scan.",
+        "Points": 0,
+        "Evaluated": true
+      }
+    ],
+    "Unevaluated": [],
+    "Deductions": [
+      {
+        "Area": "Storage",
+        "Key": "storage.critical.D:\\",
+        "Description": "Volume D:\\ has only 4,7% free space.",
+        "Points": -12,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "firewall.partial.off",
+        "Description": "Windows Firewall is disabled for 1 profile(s).",
+        "Points": -9,
+        "Evaluated": true
+      },
+      {
+        "Area": "Updates",
+        "Key": "updates.reboot.pending",
+        "Description": "Windows is waiting for a restart to finish installing updates.",
+        "Points": -8,
+        "Evaluated": true
+      },
+      {
+        "Area": "Security",
+        "Key": "bitlocker.disabled",
+        "Description": "The system volume is not encrypted.",
+        "Points": -6,
+        "Evaluated": true
+      },
+      {
+        "Area": "Stability",
+        "Key": "events.errors",
+        "Description": "101 error events were recorded in the selected window.",
+        "Points": -5,
+        "Evaluated": true
+      }
+    ],
+    "TotalDeducted": -40,
+    "Rating": "Fair",
+    "Disclaimer": "This score summarises configuration hygiene only. It is not an antivirus verdict, a vulnerability assessment or a compliance audit."
+  },
+  "CollectionStatus": [
+    {
+      "Collector": "Hardware",
+      "Category": "Hardware",
+      "Status": "Success",
+      "DurationMs": 2140,
+      "ItemCount": 14,
+      "Issues": []
+    },
+    {
+      "Collector": "OperatingSystem",
+      "Category": "OperatingSystem",
+      "Status": "Success",
+      "DurationMs": 380,
+      "ItemCount": 1,
+      "Issues": []
+    },
+    {
+      "Collector": "Software",
+      "Category": "Software",
+      "Status": "Success",
+      "DurationMs": 3920,
+      "ItemCount": 34,
+      "Issues": []
+    },
+    {
+      "Collector": "Storage",
+      "Category": "Storage",
+      "Status": "Success",
+      "DurationMs": 1210,
+      "ItemCount": 6,
+      "Issues": []
+    },
+    {
+      "Collector": "Network",
+      "Category": "Network",
+      "Status": "Success",
+      "DurationMs": 880,
+      "ItemCount": 3,
+      "Issues": []
+    },
+    {
+      "Collector": "Security",
+      "Category": "Security",
+      "Status": "Success",
+      "DurationMs": 4410,
+      "ItemCount": 12,
+      "Issues": []
+    },
+    {
+      "Collector": "Users",
+      "Category": "Users",
+      "Status": "Success",
+      "DurationMs": 1630,
+      "ItemCount": 7,
+      "Issues": []
+    },
+    {
+      "Collector": "Processes",
+      "Category": "Processes",
+      "Status": "Success",
+      "DurationMs": 2260,
+      "ItemCount": 20,
+      "Issues": []
+    },
+    {
+      "Collector": "Services",
+      "Category": "Services",
+      "Status": "Success",
+      "DurationMs": 1440,
+      "ItemCount": 14,
+      "Issues": []
+    },
+    {
+      "Collector": "Startup",
+      "Category": "Startup",
+      "Status": "Success",
+      "DurationMs": 310,
+      "ItemCount": 9,
+      "Issues": []
+    },
+    {
+      "Collector": "ScheduledTasks",
+      "Category": "ScheduledTasks",
+      "Status": "Success",
+      "DurationMs": 2980,
+      "ItemCount": 6,
+      "Issues": []
+    },
+    {
+      "Collector": "EventLogs",
+      "Category": "EventLogs",
+      "Status": "Partial",
+      "DurationMs": 9120,
+      "ItemCount": 2812,
+      "Issues": [
+        {
+          "Severity": "Warning",
+          "Source": "EventLogs",
+          "Message": "System ve Security kanallarında 1000 olay sınırına ulaşıldı; özet ilk 1000 olaydan çıkarıldı."
+        }
+      ]
+    },
+    {
+      "Collector": "FileSystem",
+      "Category": "FileSystem",
+      "Status": "Success",
+      "DurationMs": 7350,
+      "ItemCount": 4812,
+      "Issues": []
+    },
+    {
+      "Collector": "Performance",
+      "Category": "Performance",
+      "Status": "Success",
+      "DurationMs": 4200,
+      "ItemCount": 12,
+      "Issues": []
+    }
+  ],
+  "Warnings": [
+    {
+      "Severity": "Warning",
+      "Source": "EventLogs",
+      "Message": "System ve Security kanallarında 1000 olay sınırına ulaşıldı; özet ilk 1000 olaydan çıkarıldı."
+    },
+    {
+      "Severity": "Warning",
+      "Source": "Processes",
+      "Message": "2 sürecin yürütülebilir dosya imzası doğrulanamadı.",
+      "Detail": "TigerSrv, PeraScan"
+    }
+  ],
+  "Errors": [],
+  "TotalItemsDiscovered": 7762
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- PeraScan — WPF arayüzünün HTML yeniden çizimi (Themes/Dark.xaml, Controls.xaml ve Views/*.xaml'dan).
+     Veriler örnektir (veri.json, uygulamanın kendi JSON rapor biçiminde). Bu sayfa hiçbir sistem bilgisi okumaz. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>PeraScan — arayüz (tanıtım)</title>
+<link rel="icon" href="../ikon.svg">
+<link rel="stylesheet" href="stil.css?v=2">
+<script src="/_ortak/serit.js" defer></script>
+</head>
+<body>
+<div id="pencere">
+  <nav id="ray">
+    <div class="ray-ust">
+      <div class="ray-baslik">PeraScan</div>
+      <div class="soluk">Yetkili Windows Sistem İncelemesi</div>
+    </div>
+    <div id="gezinti" role="tablist"></div>
+    <div class="ray-alt">
+      <button class="dugme birincil" id="tara-dugme">Taramayı Başlat</button>
+      <button class="dugme" id="cikis-dugme">Çıkış</button>
+    </div>
+  </nav>
+  <main id="icerik">
+    <h1 id="sayfa-baslik" class="baslik">Kontrol Paneli</h1>
+    <div id="sayfa"></div>
+  </main>
+</div>
+
+<!-- Tarama Yetkilendirmesi (ConsentWindow.xaml) -->
+<div class="perde" id="izin-perde" hidden>
+  <div class="pencere-kutu izin" role="dialog" aria-modal="true" aria-labelledby="izin-baslik">
+    <div class="baslik-cubugu"><span>Tarama Yetkilendirmesi</span><button class="kapat-x" data-kapat aria-label="Kapat">✕</button></div>
+    <div class="kutu-govde">
+      <div class="baslik" id="izin-baslik">Tarama Yetkilendirmesi</div>
+      <p class="soluk ust6">Bu uygulama bilgisayarınızın sistem yapılandırması ve açıkça seçtiğiniz klasörler hakkında teknik envanter oluşturacaktır. Hiçbir veri yüklenmez; parola, belirteç, çerez veya anahtar asla toplanmaz.</p>
+      <div class="kaydir">
+        <div class="kart">
+          <div class="kart-ust"><div class="bolum-baslik">Taranacak kategorileri seçin</div>
+            <span><button class="bag" id="hepsini-sec">Tümünü seç</button><button class="bag" id="hicbiri">Tümünü temizle</button></span></div>
+          <div id="kategori-sec" class="iki-sutun"></div>
+        </div>
+        <div class="kart" id="dosya-kart" hidden>
+          <div class="bolum-baslik">Seçilen Dosya Sistemi</div>
+          <p class="soluk alt8">Yalnızca aşağıda seçtiğiniz klasörler taranacaktır ve yalnızca dosya üstverisi kaydedilir — dosya içerikleri asla okunmaz.</p>
+          <div class="liste" id="klasorler"></div>
+          <div class="satir ust8"><button class="dugme" id="klasor-ekle">Klasör Ekle…</button><button class="dugme" id="klasor-kaldir">Kaldır</button></div>
+          <label class="onay ust10"><input type="checkbox" checked><i></i>SHA-256 özeti hesapla (daha yavaş)</label>
+          <label class="onay"><input type="checkbox" checked><i></i>Yinelenen dosyaları tespit et</label>
+        </div>
+        <div class="kart">
+          <div class="bolum-baslik">Olay Günlükleri</div>
+          <div class="form-izgara">
+            <span>Olay günlüğü zaman aralığı</span>
+            <select><option>Son 24 saat</option><option selected>Son 7 gün</option><option>Son 30 gün</option></select>
+            <span>Kanal başına en fazla olay</span>
+            <input type="text" value="1000" inputmode="numeric">
+          </div>
+          <label class="onay ust8"><input type="checkbox" checked><i></i>Güvenlik olay günlüğünü dahil et (yönetici gerektirir)</label>
+        </div>
+      </div>
+      <div class="kutu-alt">
+        <div class="hata-yazi" id="izin-hata"></div>
+        <div class="sag"><button class="dugme" data-kapat>İptal</button><button class="dugme birincil genis" id="yetkilendir">Yetkilendir ve Devam Et</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Yönetici Yetkileri (ElevationWindow.xaml) -->
+<div class="perde" id="yetki-perde" hidden>
+  <div class="pencere-kutu yetki" role="dialog" aria-modal="true" aria-labelledby="yetki-baslik">
+    <div class="baslik-cubugu"><span>Yönetici Yetkileri</span><button class="kapat-x" data-iptal aria-label="Kapat">✕</button></div>
+    <div class="kutu-govde">
+      <div class="baslik" id="yetki-baslik">Yönetici Yetkileri</div>
+      <p class="ust8">Bazı sistem bilgileri yönetici yetkisi gerektirir. Yetki vermeden de devam edebilirsiniz; etkilenen bölümler raporda kullanılamıyor olarak işaretlenir.</p>
+      <p class="soluk ust8" id="yetki-etkilenen"></p>
+      <div class="dikey ust16">
+        <button class="dugme birincil" id="yetki-yukselt">Yönetici Olarak Yeniden Başlat</button>
+        <button class="dugme" id="yetki-devam">Yetki Yükseltmeden Devam Et</button>
+        <button class="dugme" data-iptal>İptal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Onay iletişim kutusu -->
+<div class="perde" id="onay-perde" hidden>
+  <div class="pencere-kutu kucuk" role="alertdialog" aria-modal="true">
+    <div class="baslik-cubugu"><span>PeraScan</span></div>
+    <div class="kutu-govde"><p id="onay-metin"></p>
+      <div class="sag ust16"><button class="dugme" id="onay-hayir">Hayır</button><button class="dugme birincil" id="onay-evet">Evet</button></div></div>
+  </div>
+</div>
+
+<div id="bildirim" role="status" aria-live="polite"></div>
+<script src="app.js?v=2"></script>
+</body>
+</html>
